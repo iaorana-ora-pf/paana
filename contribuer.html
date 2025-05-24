@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
   <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
-
   <style>
     html, body {
       margin: 0;
@@ -17,7 +16,6 @@
       font-family: 'Arial', sans-serif;
       background-color: #fdfdf0;
       color: #050505;
-      width: 100%;
     }
 
     main {
@@ -56,9 +54,9 @@
     }
 
     #fiche-controls {
-      display: none; /* Masqué par défaut */
+      display: flex;
       justify-content: space-between;
-      margin: 1rem 0;
+      margin-top: 1rem;
     }
 
     #fiche-controls button {
@@ -76,15 +74,16 @@
 
     #fiche-theme-list {
       margin-top: 1rem;
-      font-size: 0.9rem;
-      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
     }
 
     #fiche-theme-list span {
+      display: block;
+      padding: 4px 6px;
       cursor: pointer;
-      padding: 2px 6px;
-      margin: 2px;
-      display: inline-block;
+      transition: background-color 0.2s ease;
     }
 
     #fiche-theme-list span.active {
@@ -93,13 +92,16 @@
       border-radius: 3px;
     }
 
+    #fiche-theme-list span:hover {
+      background-color: #d9f0f0;
+    }
+
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">
       <span class="brand">Paana</span>
@@ -123,7 +125,7 @@
         <h2>Détails de l’événement</h2>
         <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
         <div id="fiche-theme-list"></div>
-        <div id="fiche-controls">
+        <div id="fiche-controls" style="display: none;">
           <button id="prevBtn">⬅️ Précédent</button>
           <button id="nextBtn">Suivant ➡️</button>
         </div>
@@ -144,7 +146,7 @@
           start: ev.annee_debut + '-01-01',
           end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
           group: ev.categorie_principale,
-          className: ev.theme.replace(/\s+/g, '-').toLowerCase()
+          className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
         })));
 
         const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
@@ -164,16 +166,16 @@
         });
 
         function showFiche(eventId) {
-          const event = events.find(e => e.id === eventId);
+          const event = events.find(e => e.id == eventId);
           if (!event) return;
 
           currentThemeEvents = events.filter(e => e.theme === event.theme);
-          currentIndex = currentThemeEvents.findIndex(e => e.id === eventId);
+          currentIndex = currentThemeEvents.findIndex(e => e.id == eventId);
 
           const listHTML = currentThemeEvents.map(ev => `
-            <span data-id="${ev.id}" class="${ev.id === event.id ? 'active' : ''}">${ev.titre}</span>
-          `).join(' | ');
-          document.getElementById('fiche-theme-list').innerHTML = `<p><strong>🔁 Autres événements du même thème :</strong></p>${listHTML}`;
+            <span data-id="${ev.id}" class="${ev.id == event.id ? 'active' : ''}">${ev.titre}</span>
+          `).join('');
+          document.getElementById('fiche-theme-list').innerHTML = listHTML;
 
           document.getElementById('fiche-content').innerHTML = `
             <p><strong>🏷️ Titre :</strong> ${event.titre}</p>
@@ -187,7 +189,7 @@
             <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
           `;
 
-          document.getElementById('fiche-controls').style.display = 'flex'; // Affiche les boutons
+          document.getElementById('fiche-controls').style.display = 'flex';
         }
 
         timeline.on('select', function (properties) {
@@ -199,7 +201,6 @@
           if (currentIndex > 0) {
             const prevId = currentThemeEvents[currentIndex - 1].id;
             showFiche(prevId);
-            timeline.setSelection(prevId);
           }
         });
 
@@ -207,18 +208,15 @@
           if (currentIndex < currentThemeEvents.length - 1) {
             const nextId = currentThemeEvents[currentIndex + 1].id;
             showFiche(nextId);
-            timeline.setSelection(nextId);
           }
         });
 
         document.getElementById('fiche-theme-list').addEventListener('click', (e) => {
           if (e.target.dataset.id) {
             showFiche(e.target.dataset.id);
-            timeline.setSelection(e.target.dataset.id);
           }
         });
       });
   </script>
-
 </body>
 </html>
