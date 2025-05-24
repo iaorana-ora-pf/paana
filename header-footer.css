@@ -23,6 +23,27 @@ header {
   margin-top: 10px;
 }
 
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fdfdf0;
+  position: relative;
+}
+
+.logo::after {
+  content: "";
+  display: block;
+  height: 12px;
+  background-color: #fee58c;
+  margin-top: 10px;
+}
+
+.logo .signature {
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: #fdfdf0;
+  margin-top: 0.2rem;
+}
 nav {
   display: flex;
   gap: 1rem;
