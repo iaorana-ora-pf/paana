@@ -97,7 +97,7 @@
       <a href="a-propos.html">A PROPOS</a>
       <a href="contribuer.html">CONTRIBUER</a>
       <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
-      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail"><i class="fas fa-envelope fa-lg"></i></a>
+      <a href="mailto:frise.sante.pf@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
     </nav>
   </header>
 
@@ -122,10 +122,63 @@
     let timeline;
     let events = [];
 
+    function generateThemeColors(themes) {
+      const style = document.createElement("style");
+      document.head.appendChild(style);
+
+      themes.forEach((theme, index) => {
+        const className = theme.replace(/\s+/g, '-').toLowerCase();
+        const hue = (index * 137.5) % 360; // Espacement des couleurs
+        const rule = `
+          .${className} {
+            background-color: hsl(${hue}, 70%, 60%) !important;
+            color: white !important;
+            font-weight: bold;
+          }
+        `;
+        style.sheet.insertRule(rule, style.sheet.cssRules.length);
+      });
+    }
+
+    function showFiche(eventId) {
+      const event = events.find(e => e.id == eventId);
+      if (!event) return;
+
+      currentThemeEvents = events.filter(e => e.theme === event.theme);
+      currentIndex = currentThemeEvents.findIndex(e => e.id == eventId);
+
+      document.getElementById("fiche-titre").textContent = event.titre;
+
+      document.getElementById("fiche-content").innerHTML = `
+        <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
+        <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
+        <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
+        <p><strong>🎨 Thème :</strong> ${event.theme}</p>
+        <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.join(', ') || '—'}</p>
+        <p><strong>📝 Description :</strong> ${event.description}</p>
+        <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
+        <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
+      `;
+
+      document.getElementById("fiche-theme-list").innerHTML = `
+        <strong>📂 Autres événements du même thème :</strong><br>
+        ${currentThemeEvents.map(ev => `
+          <span data-id="${ev.id}" class="${ev.id == event.id ? 'active' : ''}">${ev.titre}</span>
+        `).join('')}
+      `;
+
+      document.getElementById("fiche-controls").style.display = "flex";
+      timeline.setSelection([eventId]);
+      timeline.redraw(); // ✅ NE modifie PAS le zoom
+    }
+
     fetch('evenements.json')
       .then(response => response.json())
       .then(data => {
         events = data;
+
+        const themes = [...new Set(events.map(ev => ev.theme))];
+        generateThemeColors(themes);
 
         const items = new vis.DataSet(events.map(ev => ({
           id: ev.id,
@@ -143,70 +196,36 @@
 
         timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
           zoomMin: 1000 * 60 * 60 * 24 * 365,
-          zoomMax: 1000 * 60 * 60 * 24 * 365 * 100,
+          zoomMax: 1000 * 60 * 60 * 24 * 365 * 150,
           start: '1700-01-01',
-          end: '2030-12-31',
+          end: '2035-01-01',
           format: {
             minorLabels: { year: 'YYYY' },
             majorLabels: { year: '' }
           }
         });
 
-        function showFiche(eventId) {
-          const event = events.find(e => e.id == eventId);
-          if (!event) return;
-
-          currentThemeEvents = events.filter(e => e.theme === event.theme);
-          currentIndex = currentThemeEvents.findIndex(e => e.id == eventId);
-
-          document.getElementById("fiche-titre").textContent = event.titre;
-
-          document.getElementById("fiche-content").innerHTML = `
-            <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
-            <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
-            <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
-            <p><strong>🎨 Thème :</strong> ${event.theme}</p>
-            <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.join(', ') || '—'}</p>
-            <p><strong>📝 Description :</strong> ${event.description}</p>
-            <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
-            <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
-          `;
-
-          document.getElementById("fiche-theme-list").innerHTML = `
-            <strong><i class="fa-solid fa-folder-open"></i> Autres événements du même thème :</strong><br>
-            ${currentThemeEvents.map(ev => `
-              <span data-id="${ev.id}" class="${ev.id == event.id ? 'active' : ''}">${ev.titre}</span>
-            `).join('')}
-          `;
-
-          document.getElementById("fiche-controls").style.display = "flex";
-          timeline.setSelection([eventId]);
-          timeline.redraw(); 
-        }
-
-        document.getElementById("fiche-theme-list").addEventListener("click", (e) => {
-          if (e.target.dataset.id) {
-            showFiche(e.target.dataset.id);
+        timeline.on('select', (props) => {
+          if (props.items.length > 0) {
+            showFiche(props.items[0]);
           }
         });
 
         document.getElementById("prevBtn").addEventListener("click", () => {
           if (currentIndex > 0) {
-            const prevId = currentThemeEvents[currentIndex - 1].id;
-            showFiche(prevId);
+            showFiche(currentThemeEvents[currentIndex - 1].id);
           }
         });
 
         document.getElementById("nextBtn").addEventListener("click", () => {
           if (currentIndex < currentThemeEvents.length - 1) {
-            const nextId = currentThemeEvents[currentIndex + 1].id;
-            showFiche(nextId);
+            showFiche(currentThemeEvents[currentIndex + 1].id);
           }
         });
 
-        timeline.on('select', function (props) {
-          if (props.items.length > 0) {
-            showFiche(props.items[0]);
+        document.getElementById("fiche-theme-list").addEventListener("click", e => {
+          if (e.target.dataset.id) {
+            showFiche(e.target.dataset.id);
           }
         });
       });
