@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A propos - Paana</title>
+  <meta name="description" content="Paana - Base de connaissances sur la santé publique en Polynésie française">
+  <style>
+    /* === BASE === */
+    body {
+      margin: 0;
+      font-family: 'League Spartan', sans-serif;
+      background-color: #fdfdf0;
+      color: #050505;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* === HEADER === */
+    header {
+      background-color: #007b7f;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      color: #fdfdf0;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fdfdf0;
+      position: relative;
+    }
+
+    .logo::after {
+      content: "";
+      display: block;
+      height: 12px;
+      background-color: #fee58c;
+      margin-top: 10px;
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      background-color: #fdfdf0;
+      color: #271923;
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background-color: #fee58c;
+      transform: scale(1.05);
+    }
+
+    /* === MAIN CONTENT === */
+    main {
+      flex-grow: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 2rem 2rem;
+      background-color: #fdfdf0;
+      color: #050505;
+    }
+
+    main h2:first-of-type {
+      margin-top: 0.5rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      color: #007b7f;
+      font-weight: bold;
+      margin-top: 2rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      color: #050505;
+    }
+
+    main ul li {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 0;
+      color: #050505;
+    }
+
+    /* === FOOTER === */
+    footer, footer * {
+      background-color: #eeeeee;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #606060;
+    }
+
+    footer a {
+      color: #606060;
+      text-decoration: underline;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Paana</div>
+    <nav>
+      <a href="a-propos.html">A PROPOS</a>
+      <a href="contribuer.html">CONTRIBUER</a>
+      <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" class="btn" target="_blank">SOUMETTRE</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Comprendre pour mieux agir !</h2>
+    <p>La santé publique évolue dans le temps. Connaître les actions passées, les contextes locaux,
+      les dynamiques à l'œuvre permet de mieux préparer l’avenir.<br>
+      C’est dans cet esprit qu’a été créée Paana, base de connaissances dédiée à la santé publique
+      en Polynésie française, avec une attention particulière portée à la prévention et à la promotion de la santé.
+    </p>
+
+    <h2>Objectifs</h2>
+    <ul>
+      <li>Contribuer à une mémoire collective territoriale</li>
+      <li>Faciliter la réutilisation des savoirs existants</li>
+      <li>Soutenir une meilleure compréhension des dynamiques sanitaires locales</li>
+    </ul>
+
+    <h2>Un projet ouvert, en construction continue</h2>
+    <p>
+      Le projet est mené à titre personnel par Emmanuelle RUPP-TERRIS, consultante en santé publique,
+      dans une logique de formation continue et de partage des connaissances. La base n’a pas vocation à l’exhaustivité : elle se construit progressivement, à partir de sources variées
+      (rapports, archives, témoignages, etc.).<br>
+      Ouverte par principe, elle intègre une fonction de contribution : un formulaire simple permet à chacun
+      de suggérer des contenus ou des références, afin de renforcer collectivement cette mémoire
+      de la santé publique en Polynésie française.
+    </p>
+
+    <h2>Ce que vous pouvez faire sur la plateforme</h2>
+    <ul>
+      <li>Explorer les événements de santé publique par mot-clé, thème ou catégorie fonctionnelle 
+        <a href="Les FESP - définitions et exemples.pdf" target="_blank" title="En savoir plus ">ℹ️</a>
+      </li>
+      <li>Accéder à des fiches détaillées et sourcées</li>
+      <li>Activer un mode résumé pour visualiser rapidement l’essentiel</li>
+      <li>Suivre des regroupements thématiques dans le temps</li>
+      <li>Contribuer activement à l’enrichissement de la base via le formulaire dédié</li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>2025 - Emmanuelle RUPP-TERRIS - <a href="mailto:frise.sante.pf@gmail.com">Contact</a></p>
+  </footer>
+
+</body>
+</html>
