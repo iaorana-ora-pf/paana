@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contribuer - Paana</title>
   <meta name="description" content="Contribuer - Paana">
+  <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -64,13 +66,12 @@
       background-color: #fdfdf0;
       color: #050505;
     }
-     p {
+    p {
       font-size: 1rem;
       line-height: 1.7;
       margin-bottom: 1rem;
       color: #050505;
     }
-    
     footer, footer * {
       background-color: #eeeeee;
       text-align: center;
@@ -81,6 +82,17 @@
     footer a {
       color: #606060;
       text-decoration: underline;
+    }
+    #frise-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    #timeline {
+      width: 100%;
+      max-width: 1200px;
+      height: 400px;
+      border: 1px solid #ccc;
     }
     @media (max-width: 600px) {
       header {
@@ -108,60 +120,42 @@
 
   <main>
     <h1>Nouvelle page</h1>
-    <!-- Frise Chronologique -->
-<link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
-<script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
 
-<style>
-  #frise-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-  }
-  #timeline {
-    width: 100%;
-    max-width: 1200px;
-    height: 400px;
-    border: 1px solid #ccc;
-  }
-</style>
-
-<section id="frise-container">
-  <div id="timeline"></div>
-</section>
-
-<script>
-fetch('evenements.json')
-  .then(response => response.json())
-  .then(events => {
-    const items = new vis.DataSet(events.map(ev => ({
-      id: ev.id,
-      content: ev.titre,
-      start: ev.annee_debut + '-01-01',
-      end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
-      group: ev.categorie_principale,
-      className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
-    })));
-
-    const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
-      id: cat,
-      content: cat
-    })));
-
-    const timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
-      zoomMin: 1000 * 60 * 60 * 24 * 365 * 1,
-      zoomMax: 1000 * 60 * 60 * 24 * 365 * 50,
-      start: '1800-01-01',
-      end: '2025-12-31'
-    });
-  });
-</script>
-
+    <section id="frise-container">
+      <div id="timeline"></div>
+    </section>
   </main>
 
   <footer>
     <p>2025 - Emmanuelle RUPP-TERRIS - <a href="mailto:frise.sante.pf@gmail.com">Contact</a></p>
   </footer>
+
+  <script>
+    fetch('evenements.json')
+      .then(response => response.json())
+      .then(events => {
+        const items = new vis.DataSet(events.map(ev => ({
+          id: ev.id,
+          content: ev.titre,
+          start: ev.annee_debut + '-01-01',
+          end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
+          group: ev.categorie_principale,
+          className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
+        })));
+
+        const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
+          id: cat,
+          content: cat
+        })));
+
+        const timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
+          zoomMin: 1000 * 60 * 60 * 24 * 365 * 1,
+          zoomMax: 1000 * 60 * 60 * 24 * 365 * 50,
+          start: '1800-01-01',
+          end: '2025-12-31'
+        });
+      });
+  </script>
 
 </body>
 </html>
