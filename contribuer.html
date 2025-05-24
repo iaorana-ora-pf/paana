@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nouvelle page - Paana</title>
+  <meta name="description" content="Nouvelle page - Paana">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'League Spartan', sans-serif;
+      background-color: #fdfdf0;
+      color: #050505;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #007b7f;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      color: #fdfdf0;
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fdfdf0;
+      position: relative;
+    }
+    .logo::after {
+      content: "";
+      display: block;
+      height: 12px;
+      background-color: #fee58c;
+      margin-top: 10px;
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      text-decoration: none;
+      background-color: #fdfdf0;
+      color: #271923;
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+    }
+    nav a:hover,
+    nav a.active {
+      background-color: #fee58c;
+      transform: scale(1.05);
+    }
+    main {
+      flex-grow: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 2rem 2rem;
+      background-color: #fdfdf0;
+      color: #050505;
+    }
+    footer, footer * {
+      background-color: #eeeeee;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #606060;
+    }
+    footer a {
+      color: #606060;
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Paana</div>
+    <nav>
+      <a href="a-propos.html">A PROPOS</a>
+      <a href="contribuer.html">CONTRIBUER</a>
+      <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" class="btn" target="_blank">SOUMETTRE</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Nouvelle page</h1>
+    <!-- ✍️ Tu peux insérer ici ton contenu -->
+  </main>
+
+  <footer>
+    <p>2025 - Emmanuelle RUPP-TERRIS - <a href="mailto:frise.sante.pf@gmail.com">Contact</a></p>
+  </footer>
+
+</body>
+</html>
