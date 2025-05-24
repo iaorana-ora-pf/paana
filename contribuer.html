@@ -20,8 +20,10 @@
       width: 100%;
     }
     main {
-      padding: 1rem;
+      padding: 3rem;
     }
+
+    
     #frise-layout {
       display: flex;
       flex-direction: row;
@@ -168,8 +170,8 @@
     document.getElementById("fiche-controls").style.display = "flex";
 
     // ✅ Changer de sélection SANS zoomer
-    timeline.setSelection([eventId]);
-    timeline.redraw();
+   timeline.setSelection([eventId], {focus: false});
+timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
   }
 
   fetch('evenements.json')
