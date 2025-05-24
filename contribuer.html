@@ -139,6 +139,7 @@
     let currentThemeEvents = [];
     let currentIndex = -1;
     let events = [];
+    let timeline;
 
     fetch('evenements.json')
       .then(response => response.json())
@@ -159,11 +160,11 @@
           content: ""
         })));
 
-        const timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
-          zoomMin: 1000 * 60 * 60 * 24 * 365,
-          zoomMax: 1000 * 60 * 60 * 24 * 365 * 50,
-          start: '1800-01-01',
-          end: '2025-12-31',
+        timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
+          zoomMin: 1000 * 60 * 60 * 24 * 365,                 // 1 an
+          zoomMax: 1000 * 60 * 60 * 24 * 365 * 150,           // 150 ans
+          start: '1700-01-01',
+          end: '2035-01-01',
           format: {
             minorLabels: { year: 'YYYY' },
             majorLabels: { year: '' }
@@ -193,10 +194,10 @@
             <p><strong>📝 Description :</strong> ${event.description}</p>
             <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
             <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
-            <br>
           `;
 
           document.getElementById('fiche-controls').style.display = 'flex';
+          timeline.setSelection(event.id); // Synchroniser sélection
         }
 
         timeline.on('select', function (properties) {
@@ -225,5 +226,6 @@
         });
       });
   </script>
+
 </body>
 </html>
