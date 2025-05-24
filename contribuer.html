@@ -1,4 +1,3 @@
-<!-- 🎯 Frise chronologique Paana - corrigée -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,10 +19,8 @@
       width: 100%;
     }
     main {
-      padding: 3rem;
+      padding: 1rem;
     }
-
-    
     #frise-layout {
       display: flex;
       flex-direction: row;
@@ -168,10 +165,8 @@
     `;
 
     document.getElementById("fiche-controls").style.display = "flex";
-
-    // ✅ Changer de sélection SANS zoomer
-   timeline.setSelection([eventId], {focus: false});
-timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
+    timeline.setSelection([eventId], {focus: false});
+    timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
   }
 
   fetch('evenements.json')
@@ -205,6 +200,9 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
         format: {
           minorLabels: { year: 'YYYY' },
           majorLabels: { year: '' }
+        },
+        template: function (item) {
+          return `<div title="${item.title}">${item.content}</div>`;
         }
       });
 
@@ -233,5 +231,6 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
       });
     });
 </script>
+
 </body>
 </html>
