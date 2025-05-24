@@ -1,3 +1,4 @@
+/* === HEADER GLOBAL === */
 header {
   background-color: #007b7f;
   padding: 1.5rem 2rem;
@@ -8,11 +9,16 @@ header {
   color: #fdfdf0;
 }
 
+/* === LOGO & NOM === */
 .logo {
+  position: relative;
+  color: #fdfdf0;
+}
+
+.logo .brand {
   font-size: 2rem;
   font-weight: bold;
-  color: #fdfdf0;
-  position: relative;
+  display: block;
 }
 
 .logo::after {
@@ -20,22 +26,7 @@ header {
   display: block;
   height: 12px;
   background-color: #fee58c;
-  margin-top: 10px;
-}
-
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #fdfdf0;
-  position: relative;
-}
-
-.logo::after {
-  content: "";
-  display: block;
-  height: 12px;
-  background-color: #fee58c;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .logo .signature {
@@ -44,6 +35,8 @@ header {
   color: #fdfdf0;
   margin-top: 0.2rem;
 }
+
+/* === NAVIGATION === */
 nav {
   display: flex;
   gap: 1rem;
@@ -66,14 +59,17 @@ nav a.active {
   transform: scale(1.05);
 }
 
+/* === ICONES === */
 nav a i {
   color: #271923;
+  font-weight: normal;
 }
 
 nav a:hover i {
   color: #000;
 }
 
+/* === RESPONSIVE === */
 @media (max-width: 600px) {
   header {
     flex-direction: column;
