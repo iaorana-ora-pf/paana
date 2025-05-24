@@ -56,7 +56,7 @@
     }
 
     #fiche-controls {
-      display: flex;
+      display: none; /* Masqué par défaut */
       justify-content: space-between;
       margin: 1rem 0;
     }
@@ -75,7 +75,7 @@
     }
 
     #fiche-theme-list {
-      margin-bottom: 1rem;
+      margin-top: 1rem;
       font-size: 0.9rem;
       line-height: 1.5;
     }
@@ -121,13 +121,13 @@
       <div id="timeline"></div>
       <aside id="fiche">
         <h2>Détails de l’événement</h2>
-         <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
+        <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
         <div id="fiche-theme-list"></div>
-          <div id="fiche-controls">
+        <div id="fiche-controls">
           <button id="prevBtn">⬅️ Précédent</button>
           <button id="nextBtn">Suivant ➡️</button>
-      </div>
-        </aside>
+        </div>
+      </aside>
     </div>
   </main>
 
@@ -144,7 +144,7 @@
           start: ev.annee_debut + '-01-01',
           end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
           group: ev.categorie_principale,
-          className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
+          className: ev.theme.replace(/\s+/g, '-').toLowerCase()
         })));
 
         const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
@@ -173,7 +173,7 @@
           const listHTML = currentThemeEvents.map(ev => `
             <span data-id="${ev.id}" class="${ev.id === event.id ? 'active' : ''}">${ev.titre}</span>
           `).join(' | ');
-          document.getElementById('fiche-theme-list').innerHTML = listHTML;
+          document.getElementById('fiche-theme-list').innerHTML = `<p><strong>🔁 Autres événements du même thème :</strong></p>${listHTML}`;
 
           document.getElementById('fiche-content').innerHTML = `
             <p><strong>🏷️ Titre :</strong> ${event.titre}</p>
@@ -185,9 +185,9 @@
             <p><strong>📝 Description :</strong> ${event.description}</p>
             <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
             <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
-            <p><strong>Les autres évènements de ce thème  :</strong></p><br>
-            <br><br>
           `;
+
+          document.getElementById('fiche-controls').style.display = 'flex'; // Affiche les boutons
         }
 
         timeline.on('select', function (properties) {
