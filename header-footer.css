@@ -11,7 +11,6 @@ header {
 
 /* === LOGO & NOM === */
 .logo {
-  position: relative;
   color: #fdfdf0;
 }
 
@@ -21,16 +20,13 @@ header {
   display: block;
 }
 
-.logo::after {
-  content: "";
-  display: block;
-
-  .logo .trait {
+.logo .trait {
   height: 12px;
   background-color: #fee58c;
   width: 100px;
   margin: 10px 0;
 }
+
 .logo .signature {
   font-size: 0.9rem;
   font-weight: normal;
@@ -61,7 +57,6 @@ nav a.active {
   transform: scale(1.05);
 }
 
-/* === ICONES === */
 nav a i {
   color: #271923;
   font-weight: normal;
