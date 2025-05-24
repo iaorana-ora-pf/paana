@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
   <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+
   <style>
     html, body {
       margin: 0;
@@ -16,6 +17,7 @@
       font-family: 'Arial', sans-serif;
       background-color: #fdfdf0;
       color: #050505;
+      width: 100%;
     }
 
     main {
@@ -54,7 +56,7 @@
     }
 
     #fiche-controls {
-      display: flex;
+      display: none;
       justify-content: space-between;
       margin-top: 1rem;
     }
@@ -73,7 +75,7 @@
     }
 
     #fiche-theme-list {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
@@ -86,14 +88,13 @@
       transition: background-color 0.2s ease;
     }
 
-    #fiche-theme-list span.active {
-      font-weight: bold;
-      background-color: #fee58c;
-      border-radius: 3px;
+    #fiche-theme-list span:hover {
+      background-color: #e6f7f8;
     }
 
-    #fiche-theme-list span:hover {
-      background-color: #d9f0f0;
+    #fiche-theme-list span.active {
+      font-weight: bold;
+      background-color: transparent;
     }
 
     .vis-labelset, .vis-group-label {
@@ -102,6 +103,7 @@
   </style>
 </head>
 <body>
+
   <header>
     <div class="logo">
       <span class="brand">Paana</span>
@@ -122,10 +124,10 @@
     <div id="frise-layout">
       <div id="timeline"></div>
       <aside id="fiche">
-        <h2>Détails de l’événement</h2>
+        <h2 id="fiche-title">Détails de l’événement</h2>
         <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
         <div id="fiche-theme-list"></div>
-        <div id="fiche-controls" style="display: none;">
+        <div id="fiche-controls">
           <button id="prevBtn">⬅️ Précédent</button>
           <button id="nextBtn">Suivant ➡️</button>
         </div>
@@ -136,17 +138,20 @@
   <script>
     let currentThemeEvents = [];
     let currentIndex = -1;
+    let events = [];
 
     fetch('evenements.json')
       .then(response => response.json())
-      .then(events => {
+      .then(data => {
+        events = data;
+
         const items = new vis.DataSet(events.map(ev => ({
           id: ev.id,
           content: ev.titre,
           start: ev.annee_debut + '-01-01',
           end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
           group: ev.categorie_principale,
-          className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
+          className: ev.theme.replace(/\s+/g, '-').toLowerCase()
         })));
 
         const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
@@ -172,13 +177,14 @@
           currentThemeEvents = events.filter(e => e.theme === event.theme);
           currentIndex = currentThemeEvents.findIndex(e => e.id == eventId);
 
+          document.getElementById("fiche-title").textContent = event.titre;
+
           const listHTML = currentThemeEvents.map(ev => `
             <span data-id="${ev.id}" class="${ev.id == event.id ? 'active' : ''}">${ev.titre}</span>
           `).join('');
-          document.getElementById('fiche-theme-list').innerHTML = listHTML;
+          document.getElementById('fiche-theme-list').innerHTML = `<strong>📑 Autres événements du même thème :</strong><br>${listHTML}`;
 
           document.getElementById('fiche-content').innerHTML = `
-            <p><strong>🏷️ Titre :</strong> ${event.titre}</p>
             <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
             <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
             <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
@@ -187,6 +193,8 @@
             <p><strong>📝 Description :</strong> ${event.description}</p>
             <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
             <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
+            <br><br>
+            <p><strong> Les autres évènements du même thème :</strong></p>
           `;
 
           document.getElementById('fiche-controls').style.display = 'flex';
