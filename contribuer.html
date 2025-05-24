@@ -185,6 +185,7 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
       const items = new vis.DataSet(events.map(ev => ({
         id: ev.id,
         content: ev.titre,
+        title: ev.titre,
         start: ev.annee_debut + '-01-01',
         end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
         group: ev.categorie_principale,
