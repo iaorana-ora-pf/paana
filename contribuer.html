@@ -23,7 +23,6 @@
       padding: 3rem;
     }
 
-    
     #frise-layout {
       display: flex;
       flex-direction: row;
@@ -86,6 +85,17 @@
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
+    #filtres-container div {
+      margin: 1rem 0;
+    }
+    #filtres-container label {
+      margin-right: 1rem;
+      display: inline-block;
+    }
+    .filtre-desactive {
+      opacity: 0.4;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -106,8 +116,24 @@
 
 <main>
   <p style="margin-bottom: 1rem; font-style: italic;">
-  Les événements sont regroupés par catégorie principale et colorés selon leur thème.
-</p>
+    Les événements sont regroupés par catégorie principale et colorés selon leur thème.
+  </p>
+
+  <div id="filtres-container" style="margin-bottom: 2rem;">
+    <div>
+      <strong>🗂️ Catégories</strong>
+      <div id="filtres-categories"></div>
+    </div>
+    <div>
+      <strong>🎨 Thèmes</strong>
+      <div id="filtres-themes"></div>
+    </div>
+    <div>
+      <strong>🏷️ Mots-clés</strong>
+      <div id="filtres-motscles"></div>
+    </div>
+  </div>
+
   <div id="frise-layout">
     <div id="timeline"></div>
     <aside id="fiche">
@@ -172,9 +198,8 @@
 
     document.getElementById("fiche-controls").style.display = "flex";
 
-    // ✅ Changer de sélection SANS zoomer
-   timeline.setSelection([eventId], {focus: false});
-timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
+    timeline.setSelection([eventId], {focus: false});
+    timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
   }
 
   fetch('evenements.json')
@@ -184,6 +209,90 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
 
       const themes = [...new Set(events.map(ev => ev.theme))];
       generateThemeColors(themes);
+
+      // 🧠 FILTRE UI - Initialisation
+      const filterMap = {
+        categories: new Map(),
+        themes: new Map(),
+        motscles: new Map()
+      };
+
+      events.forEach(ev => {
+        [ev.categorie_principale, ev.categorie_secondaire].filter(Boolean).forEach(cat => {
+          if (!filterMap.categories.has(cat)) filterMap.categories.set(cat, []);
+          filterMap.categories.get(cat).push(ev);
+        });
+        if (!filterMap.themes.has(ev.theme)) filterMap.themes.set(ev.theme, []);
+        filterMap.themes.get(ev.theme).push(ev);
+        (ev.mots_cles || []).forEach(mc => {
+          if (!filterMap.motscles.has(mc)) filterMap.motscles.set(mc, []);
+          filterMap.motscles.get(mc).push(ev);
+        });
+      });
+
+      function createFilterUI(type, containerId) {
+        const container = document.getElementById(containerId);
+        [...filterMap[type].keys()].sort().forEach(value => {
+          const id = `${type}-${value.replace(/\s+/g, '_')}`;
+          container.innerHTML += `
+            <label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>
+          `;
+        });
+      }
+
+      createFilterUI('categories', 'filtres-categories');
+      createFilterUI('themes', 'filtres-themes');
+      createFilterUI('motscles', 'filtres-motscles');
+
+      function updateFilterVisibility() {
+        const checked = {
+          categories: [],
+          themes: [],
+          motscles: []
+        };
+
+        document.querySelectorAll('#filtres-container input[type="checkbox"]:checked').forEach(cb => {
+          checked[cb.dataset.type].push(cb.value);
+        });
+
+        const matchedEvents = new Set();
+        events.forEach(ev => {
+          const matchCat = checked.categories.length === 0 || checked.categories.includes(ev.categorie_principale) || checked.categories.includes(ev.categorie_secondaire);
+          const matchTheme = checked.themes.length === 0 || checked.themes.includes(ev.theme);
+          const matchMotcle = checked.motscles.length === 0 || (ev.mots_cles || []).some(mc => checked.motscles.includes(mc));
+          if (matchCat && matchTheme && matchMotcle) {
+            matchedEvents.add(ev);
+          }
+        });
+
+        const available = {
+          categories: new Set(),
+          themes: new Set(),
+          motscles: new Set()
+        };
+
+        matchedEvents.forEach(ev => {
+          [ev.categorie_principale, ev.categorie_secondaire].forEach(cat => cat && available.categories.add(cat));
+          ev.theme && available.themes.add(ev.theme);
+          (ev.mots_cles || []).forEach(mc => available.motscles.add(mc));
+        });
+
+        document.querySelectorAll('#filtres-container input[type="checkbox"]').forEach(cb => {
+          const val = cb.value;
+          const type = cb.dataset.type;
+          const label = cb.parentElement;
+          if (
+            checked[type].length === 0 || // rien coché dans ce groupe
+            available[type].has(val)
+          ) {
+            label.classList.remove('filtre-desactive');
+          } else {
+            label.classList.add('filtre-desactive');
+          }
+        });
+      }
+
+      document.getElementById('filtres-container').addEventListener('change', updateFilterVisibility);
 
       const items = new vis.DataSet(events.map(ev => ({
         id: ev.id,
