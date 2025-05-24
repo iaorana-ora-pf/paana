@@ -181,7 +181,7 @@
 
           document.getElementById("fiche-controls").style.display = "flex";
           timeline.setSelection([eventId]);
-          timeline.focus(eventId);
+          timeline.redraw(); 
         }
 
         document.getElementById("fiche-theme-list").addEventListener("click", (e) => {
