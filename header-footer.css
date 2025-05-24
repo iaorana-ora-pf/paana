@@ -52,13 +52,12 @@ footer {
   padding: 1rem;
   font-size: 0.9rem;
   color: #606060;
+  font-weight: normal;
 }
 
 footer a {
-  background-color: #eeeeee;
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
   color: #606060;
-  text-decoration: underline;
+  text-decoration: none;
+  font-size: inherit;
+  font-weight: inherit;
 }
