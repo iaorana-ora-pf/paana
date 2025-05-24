@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contribuer - Paana</title>
+  <title>Frise - Paana</title>
+  <meta name="description" content="Frise chronologique - Paana">
+  <link rel="stylesheet" href="header-footer.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
   <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+
   <style>
     html, body {
       margin: 0;
@@ -15,58 +19,21 @@
       color: #050505;
       width: 100%;
     }
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      background-color: #007b7f;
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #fdfdf0;
-    }
-    .logo {
-      font-size: 2rem;
-      font-weight: bold;
-    }
-    nav a {
-      text-decoration: none;
-      margin-left: 1rem;
-      background-color: #fdfdf0;
-      color: #271923;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-weight: bold;
-    }
-    main {
-      flex-grow: 1;
-      padding: 1rem 0;
-    }
+
     #frise-container {
       width: 100%;
     }
+
     #timeline {
       width: 100vw;
       height: 500px;
       border: 1px solid #ccc;
     }
-    footer {
-      background-color: #eeeeee;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #606060;
-    }
 
-    /* Masquer les noms des groupes */
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
 
-    /* Exemple de coloration par thème */
     .vaccination { background-color: #2ecc71 !important; color: #fff; font-weight: bold; }
     .épidémie { background-color: #e74c3c !important; color: #fff; font-weight: bold; }
     .nutrition { background-color: #f39c12 !important; color: #fff; font-weight: bold; }
@@ -77,11 +44,18 @@
 <body>
 
   <header>
-    <div class="logo">Paana</div>
+    <div class="logo">
+      <span class="brand">Paana</span>
+      <div class="trait"></div>
+      <div class="signature">Emmanuelle RUPP-TERRIS</div>
+    </div>
     <nav>
       <a href="a-propos.html">A PROPOS</a>
       <a href="contribuer.html">CONTRIBUER</a>
-      <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" class="btn" target="_blank">SOUMETTRE</a>
+      <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
+      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
+        <i class="fas fa-envelope fa-lg"></i>
+      </a>
     </nav>
   </header>
 
@@ -90,10 +64,6 @@
       <div id="timeline"></div>
     </section>
   </main>
-
-  <footer>
-    <p>2025 - Emmanuelle RUPP-TERRIS - <a href="mailto:frise.sante.pf@gmail.com">Contact</a></p>
-  </footer>
 
   <script>
     fetch('evenements.json')
@@ -105,12 +75,12 @@
           start: ev.annee_debut + '-01-01',
           end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
           group: ev.categorie_principale,
-          className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
+          className: ev.theme.replace(/\s+/g, '-').toLowerCase()
         })));
 
         const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
           id: cat,
-          content: ""  // Masquer les labels de groupe
+          content: ""
         })));
 
         const timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
