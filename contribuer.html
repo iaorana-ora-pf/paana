@@ -45,3 +45,85 @@
       flex-grow: 1;
       padding: 1rem 0;
     }
+    #frise-container {
+      width: 100%;
+    }
+    #timeline {
+      width: 100vw;
+      height: 500px;
+      border: 1px solid #ccc;
+    }
+    footer {
+      background-color: #eeeeee;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #606060;
+    }
+
+    /* Masquer les noms des groupes */
+    .vis-labelset, .vis-group-label {
+      display: none !important;
+    }
+
+    /* Exemple de coloration par thème */
+    .vaccination { background-color: #2ecc71 !important; color: #fff; font-weight: bold; }
+    .épidémie { background-color: #e74c3c !important; color: #fff; font-weight: bold; }
+    .nutrition { background-color: #f39c12 !important; color: #fff; font-weight: bold; }
+    .technologies-médicales { background-color: #3498db !important; color: #fff; font-weight: bold; }
+    .éducation-à-la-santé { background-color: #9b59b6 !important; color: #fff; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Paana</div>
+    <nav>
+      <a href="a-propos.html">A PROPOS</a>
+      <a href="contribuer.html">CONTRIBUER</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="frise-container">
+      <div id="timeline"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>2025 - Emmanuelle RUPP-TERRIS - <a href="mailto:frise.sante.pf@gmail.com">Contact</a></p>
+  </footer>
+
+  <script>
+    fetch('evenements.json')
+      .then(response => response.json())
+      .then(events => {
+        const items = new vis.DataSet(events.map(ev => ({
+          id: ev.id,
+          content: ev.titre,
+          start: ev.annee_debut + '-01-01',
+          end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
+          group: ev.categorie_principale,
+          className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
+        })));
+
+        const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
+          id: cat,
+          content: ""  // Masquer les labels de groupe
+        })));
+
+        const timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
+          zoomMin: 1000 * 60 * 60 * 24 * 365,
+          zoomMax: 1000 * 60 * 60 * 24 * 365 * 50,
+          start: '1800-01-01',
+          end: '2025-12-31',
+          format: {
+            minorLabels: { year: 'YYYY' },
+            majorLabels: { year: '' }
+          }
+        });
+      });
+  </script>
+
+</body>
+</html>
