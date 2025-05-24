@@ -21,11 +21,10 @@ header {
   display: block;
 }
 
-.logo::after {
-  content: "";
-  display: block;
+.logo .trait {
   height: 12px;
   background-color: #fee58c;
+  width: 100px;
   margin: 10px 0;
 }
 
