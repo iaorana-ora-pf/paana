@@ -121,13 +121,13 @@
       <div id="timeline"></div>
       <aside id="fiche">
         <h2>Détails de l’événement</h2>
+         <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
         <div id="fiche-theme-list"></div>
         <div id="fiche-controls">
           <button id="prevBtn">⬅️ Précédent</button>
           <button id="nextBtn">Suivant ➡️</button>
         </div>
-        <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
-      </aside>
+        </aside>
     </div>
   </main>
 
@@ -178,9 +178,9 @@
           document.getElementById('fiche-content').innerHTML = `
             <p><strong>🏷️ Titre :</strong> ${event.titre}</p>
             <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
-            <p><strong>🎨 Thème :</strong> ${event.theme}</p>
             <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
             <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
+            <p><strong>🎨 Thème :</strong> ${event.theme}</p>
             <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.join(', ') || '—'}</p>
             <p><strong>📝 Description :</strong> ${event.description}</p>
             <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
