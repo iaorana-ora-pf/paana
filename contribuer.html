@@ -20,16 +20,42 @@
       width: 100%;
     }
 
-    #frise-container {
-      width: 100%;
+    main {
+      padding: 1rem;
+    }
+
+    #frise-layout {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
     }
 
     #timeline {
-      width: 100vw;
+      flex: 2;
       height: 300px;
       border: 1px solid #ccc;
     }
 
+    #fiche {
+      flex: 1;
+      background-color: #f7f7f7;
+      padding: 1rem;
+      border-left: 2px solid #ccc;
+      overflow-y: auto;
+      font-size: 0.95rem;
+    }
+
+    #fiche h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #007b7f;
+    }
+
+    #fiche-content {
+      margin-top: 1rem;
+    }
+
+    /* Masquer les labels de groupe */
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
@@ -60,9 +86,13 @@
   </header>
 
   <main>
-    <section id="frise-container">
+    <div id="frise-layout">
       <div id="timeline"></div>
-    </section>
+      <aside id="fiche">
+        <h2>Détails de l’événement</h2>
+        <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
+      </aside>
+    </div>
   </main>
 
   <script>
@@ -91,6 +121,25 @@
           format: {
             minorLabels: { year: 'YYYY' },
             majorLabels: { year: '' }
+          }
+        });
+
+        // Sélection et affichage dans la fiche
+        timeline.on('select', function (properties) {
+          const selectedId = properties.items[0];
+          const event = events.find(e => e.id === selectedId);
+          if (event) {
+            document.getElementById('fiche-content').innerHTML = `
+              <p><strong>🏷️ Titre :</strong> ${event.titre}</p>
+              <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
+              <p><strong>🎨 Thème :</strong> ${event.theme}</p>
+              <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
+              <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
+              <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.join(', ') || '—'}</p>
+              <p><strong>📝 Description :</strong> ${event.description}</p>
+              <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
+              <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
+            `;
           }
         });
       });
