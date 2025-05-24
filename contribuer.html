@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
   <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
-
   <style>
     html, body {
       margin: 0;
@@ -19,23 +18,19 @@
       color: #050505;
       width: 100%;
     }
-
     main {
       padding: 1rem;
     }
-
     #frise-layout {
       display: flex;
       flex-direction: row;
       gap: 1rem;
     }
-
     #timeline {
       flex: 2;
-      height: 300px;
+      height: 400px;
       border: 1px solid #ccc;
     }
-
     #fiche {
       flex: 1;
       background-color: #f7f7f7;
@@ -44,23 +39,19 @@
       overflow-y: auto;
       font-size: 0.95rem;
     }
-
     #fiche h2 {
       margin-top: 0;
       font-size: 1.2rem;
       color: #007b7f;
     }
-
     #fiche-content {
       margin-top: 1rem;
     }
-
     #fiche-controls {
-      display: none;
+      display: flex;
       justify-content: space-between;
-      margin-top: 1rem;
+      margin: 1rem 0;
     }
-
     #fiche-controls button {
       padding: 0.5rem 1rem;
       background-color: #007b7f;
@@ -69,34 +60,26 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     #fiche-controls button:hover {
       background-color: #005f61;
     }
-
     #fiche-theme-list {
-      margin-top: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
     }
-
     #fiche-theme-list span {
       display: block;
       padding: 4px 6px;
       cursor: pointer;
-      transition: background-color 0.2s ease;
     }
-
     #fiche-theme-list span:hover {
-      background-color: #e6f7f8;
+      background-color: #e0e0e0;
     }
-
     #fiche-theme-list span.active {
       font-weight: bold;
       background-color: transparent;
     }
-
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
@@ -114,9 +97,7 @@
       <a href="a-propos.html">A PROPOS</a>
       <a href="contribuer.html">CONTRIBUER</a>
       <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
-      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
-        <i class="fas fa-envelope fa-lg"></i>
-      </a>
+      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail"><i class="fas fa-envelope fa-lg"></i></a>
     </nav>
   </header>
 
@@ -124,10 +105,10 @@
     <div id="frise-layout">
       <div id="timeline"></div>
       <aside id="fiche">
-        <h2 id="fiche-title">Détails de l’événement</h2>
+        <h2 id="fiche-titre">Détails de l’événement</h2>
         <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
         <div id="fiche-theme-list"></div>
-        <div id="fiche-controls">
+        <div id="fiche-controls" style="display: none;">
           <button id="prevBtn">⬅️ Précédent</button>
           <button id="nextBtn">Suivant ➡️</button>
         </div>
@@ -138,8 +119,8 @@
   <script>
     let currentThemeEvents = [];
     let currentIndex = -1;
-    let events = [];
     let timeline;
+    let events = [];
 
     fetch('evenements.json')
       .then(response => response.json())
@@ -161,10 +142,10 @@
         })));
 
         timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
-          zoomMin: 1000 * 60 * 60 * 24 * 365,                 // 1 an
-          zoomMax: 1000 * 60 * 60 * 24 * 365 * 150,           // 150 ans
+          zoomMin: 1000 * 60 * 60 * 24 * 365,
+          zoomMax: 1000 * 60 * 60 * 24 * 365 * 100,
           start: '1700-01-01',
-          end: '2035-01-01',
+          end: '2030-12-31',
           format: {
             minorLabels: { year: 'YYYY' },
             majorLabels: { year: '' }
@@ -178,14 +159,9 @@
           currentThemeEvents = events.filter(e => e.theme === event.theme);
           currentIndex = currentThemeEvents.findIndex(e => e.id == eventId);
 
-          document.getElementById("fiche-title").textContent = event.titre;
+          document.getElementById("fiche-titre").textContent = event.titre;
 
-          const listHTML = currentThemeEvents.map(ev => `
-            <span data-id="${ev.id}" class="${ev.id == event.id ? 'active' : ''}">${ev.titre}</span>
-          `).join('');
-          document.getElementById('fiche-theme-list').innerHTML = `<strong>📑 Autres événements du même thème :</strong><br>${listHTML}`;
-
-          document.getElementById('fiche-content').innerHTML = `
+          document.getElementById("fiche-content").innerHTML = `
             <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
             <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
             <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
@@ -196,36 +172,43 @@
             <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
           `;
 
-          document.getElementById('fiche-controls').style.display = 'flex';
-          timeline.setSelection(event.id); // Synchroniser sélection
+          document.getElementById("fiche-theme-list").innerHTML = `
+            <strong><i class="fa-solid fa-folder-open"></i> Autres événements du même thème :</strong><br>
+            ${currentThemeEvents.map(ev => `
+              <span data-id="${ev.id}" class="${ev.id == event.id ? 'active' : ''}">${ev.titre}</span>
+            `).join('')}
+          `;
+
+          document.getElementById("fiche-controls").style.display = "flex";
+          timeline.setSelection([eventId]);
         }
 
-        timeline.on('select', function (properties) {
-          const selectedId = properties.items[0];
-          showFiche(selectedId);
+        document.getElementById("fiche-theme-list").addEventListener("click", (e) => {
+          if (e.target.dataset.id) {
+            showFiche(e.target.dataset.id);
+          }
         });
 
-        document.getElementById('prevBtn').addEventListener('click', () => {
+        document.getElementById("prevBtn").addEventListener("click", () => {
           if (currentIndex > 0) {
             const prevId = currentThemeEvents[currentIndex - 1].id;
             showFiche(prevId);
           }
         });
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
+        document.getElementById("nextBtn").addEventListener("click", () => {
           if (currentIndex < currentThemeEvents.length - 1) {
             const nextId = currentThemeEvents[currentIndex + 1].id;
             showFiche(nextId);
           }
         });
 
-        document.getElementById('fiche-theme-list').addEventListener('click', (e) => {
-          if (e.target.dataset.id) {
-            showFiche(e.target.dataset.id);
+        timeline.on('select', function (props) {
+          if (props.items.length > 0) {
+            showFiche(props.items[0]);
           }
         });
       });
   </script>
-
 </body>
 </html>
