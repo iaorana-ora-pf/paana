@@ -160,6 +160,20 @@ a[href*="decs.bvsalud.org"] {
 </main>
 
 <script>
+
+let decsLinks = {};
+
+fetch('motscles-decs.json')
+  .then(response => response.json())
+  .then(data => {
+    decsLinks = data;
+  });
+
+// Utility to get the correct DeCS URL
+function getDeCSLink(keyword) {
+  return decsLinks[keyword] || `https://decs.bvsalud.org/fr/?q=${encodeURIComponent(keyword)}`;
+}
+
   let currentThemeEvents = [];
   let currentIndex = -1;
   let timeline;
@@ -195,7 +209,7 @@ a[href*="decs.bvsalud.org"] {
       <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
       <p><strong>🎨 Thème :</strong> ${event.theme}</p>
       <p><strong>🔖 Mots-clés :</strong> ${
-  event.mots_cles?.map(mc => `${mc} <a href="https://decs.bvsalud.org/fr/?q=${encodeURIComponent(mc)}" target="_blank">🔗</a>`).join(', ') || '—'
+  event.mots_cles?.map(mc => `${mc} <a href="${getDeCSLink(mc)}" target="_blank">🔗</a>`).join(', ') || '—'
 }</p>
       <p><strong>📝 Description :</strong> ${event.description}</p>
       <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
@@ -234,7 +248,7 @@ function createFilterUI(type, containerId, values) {
       html = `
         <label>
           <input type="checkbox" data-type="${type}" value="${value}" id="${id}"> 
-          ${value} <a href="https://decs.bvsalud.org/fr/?q=${encoded}" target="_blank">🔗</a>
+          ${value} <a href="${getDeCSLink(value)}" target="_blank">🔗</a>
         </label>`;
     } else {
       html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
