@@ -191,7 +191,7 @@
   <p><strong>🎨 Thème :</strong> ${event.theme}</p>
   <p><strong>🔖 Mots-clés :</strong> ${
     (event.mots_cles || []).map(mc =>
-      `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(mc)}" target="_blank">${mc}</a>`
+      `<a href="https://decs.bvsalud.org/fr/?q=${encodeURIComponent(mc)}" target="_blank">${mc}</a>`
     ).join(', ') || '—'
   }</p>
   <p><strong>📝 Description :</strong> ${event.description}</p>
