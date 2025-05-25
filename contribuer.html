@@ -225,16 +225,21 @@ function updateFilterVisibility() {
     categories: [],
     themes: [],
     motscles: []
- const filtered = originalItems.filter(item => {
-  const ev = events.find(e => e.id === item.id);
-  const matchCat = checked.categories.length === 0 || checked.categories.includes(ev.categorie_principale) || checked.categories.includes(ev.categorie_secondaire);
-  const matchTheme = checked.themes.length === 0 || checked.themes.includes(ev.theme);
-  const matchMots = checked.motscles.length === 0 || (ev.mots_cles || []).some(m => checked.motscles.includes(m));
-  return matchCat && matchTheme && matchMots;
-});
+  };
 
-timeline.setItems(filtered);
-};
+  document.querySelectorAll('#filtres-container input[type="checkbox"]:checked').forEach(cb => {
+    checked[cb.dataset.type].push(cb.value);
+  });
+
+  const filtered = originalItems.filter(item => {
+    const ev = events.find(e => e.id === item.id);
+    const matchCat = checked.categories.length === 0 || checked.categories.includes(ev.categorie_principale) || checked.categories.includes(ev.categorie_secondaire);
+    const matchTheme = checked.themes.length === 0 || checked.themes.includes(ev.theme);
+    const matchMots = checked.motscles.length === 0 || (ev.mots_cles || []).some(m => checked.motscles.includes(m));
+    return matchCat && matchTheme && matchMots;
+  });
+
+  timeline.setItems(filtered);
 
   document.querySelectorAll('#filtres-container input[type="checkbox"]:checked').forEach(cb => {
     checked[cb.dataset.type].push(cb.value);
