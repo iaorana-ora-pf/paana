@@ -314,34 +314,7 @@ function updateFilterVisibility() {
     document.getElementById("filtres-container").addEventListener("change", updateFilterVisibility);
     updateFilterVisibility();
     
-const themes = [...new Set(events.map(ev => ev.theme))];
-      generateThemeColors(themes);
 
-      const items = new vis.DataSet(events.map(ev => ({
-        id: ev.id,
-        content: ev.titre,
-        title: ev.titre,
-        start: ev.annee_debut + '-01-01',
-        end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
-        group: ev.categorie_principale,
-        className: ev.theme.replace(/\s+/g, '-').toLowerCase()
-      })));
-
-      const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
-        id: cat,
-        content: ""
-      })));
-
-      timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
-        zoomMin: 1000 * 60 * 60 * 24 * 365,
-        zoomMax: 1000 * 60 * 60 * 24 * 365 * 150,
-        start: '1700-01-01',
-        end: '2035-01-01',
-        format: {
-          minorLabels: { year: 'YYYY' },
-          majorLabels: { year: '' }
-        }
-      });
 
       timeline.on('select', (props) => {
         if (props.items.length > 0) {
@@ -370,4 +343,3 @@ const themes = [...new Set(events.map(ev => ev.theme))];
 </script>
 </body>
 </html>
-
