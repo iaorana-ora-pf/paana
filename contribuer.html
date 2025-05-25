@@ -241,10 +241,6 @@ function updateFilterVisibility() {
 
   timeline.setItems(filtered);
 
-  document.querySelectorAll('#filtres-container input[type="checkbox"]:checked').forEach(cb => {
-    checked[cb.dataset.type].push(cb.value);
-  });
-
   const activeGroups = Object.entries(checked).filter(([_, arr]) => arr.length > 0);
 
   if (activeGroups.length === 1) {
@@ -373,6 +369,7 @@ const items = new vis.DataSet(originalItems);
         if (e.target.dataset.id) {
           showFiche(e.target.dataset.id);
         }
+        updateFilterVisibility();
       });
     });
 </script>
