@@ -185,18 +185,19 @@
 
     document.getElementById("fiche-titre").textContent = event.titre;
     document.getElementById("fiche-content").innerHTML = `
-      <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
-      <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
-      <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
-      <p><strong>🎨 Thème :</strong> ${event.theme}</p>
-      <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.map(mc =>
-    `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(mc)}" target="_blank">${mc}</a>`
-      ).join(', ') || '—'
-      }</p>
-      <p><strong>📝 Description :</strong> ${event.description}</p>
-      <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
-      <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
-    `;
+  <p><strong>📅 Année(s) :</strong> ${event.annee_debut} - ${event.annee_fin}</p>
+  <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
+  <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
+  <p><strong>🎨 Thème :</strong> ${event.theme}</p>
+  <p><strong>🔖 Mots-clés :</strong> ${
+    (event.mots_cles || []).map(mc =>
+      `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(mc)}" target="_blank">${mc}</a>`
+    ).join(', ') || '—'
+  }</p>
+  <p><strong>📝 Description :</strong> ${event.description}</p>
+  <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
+  <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
+`;
 
     document.getElementById("fiche-theme-list").innerHTML = `
       <strong>📂 Autres événements du même thème :</strong><br>
