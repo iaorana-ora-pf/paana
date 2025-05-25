@@ -86,20 +86,7 @@
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
-  
-#filtres-container div {
-  margin: 1rem 0;
-}
-#filtres-container label {
-  margin-right: 1rem;
-  display: inline-block;
-}
-.filtre-desactive {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-</style>
+  </style>
 </head>
 <body>
 
@@ -118,23 +105,7 @@
 </header>
 
 <main>
-  
-<div id="filtres-container" style="margin-bottom: 2rem;">
-  <div>
-    <strong>🗂️ Catégories</strong>
-    <div id="filtres-categories"></div>
-  </div>
-  <div>
-    <strong>🎨 Thèmes</strong>
-    <div id="filtres-themes"></div>
-  </div>
-  <div>
-    <strong>🏷️ Mots-clés</strong>
-    <div id="filtres-motscles"></div>
-  </div>
-</div>
-
-<div id="frise-layout">
+  <div id="frise-layout">
     <div id="timeline"></div>
     <aside id="fiche">
       <h2 id="fiche-titre">Détails de l’événement</h2>
@@ -210,14 +181,11 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
 
       
 
-function createFilterUI(type, containerId, values) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-  [...values].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })).forEach(value => {
-    const id = `${type}-${value.replace(/\s+/g, '_')}`;
-    const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
-    container.insertAdjacentHTML('beforeend', html);
-  });
+let originalItems = [];
+
+function updateFriseFilteredEvents(filteredIds) {
+  const filtered = originalItems.filter(item => filteredIds.has(item.id));
+  timeline.setItems(filtered.length > 0 ? filtered : []);
 }
 
 function updateFilterVisibility() {
@@ -233,22 +201,22 @@ function updateFilterVisibility() {
 
   const activeGroups = Object.entries(checked).filter(([_, arr]) => arr.length > 0);
 
+  let matchedEvents = events;
+
+  if (activeGroups.length > 0) {
+    matchedEvents = events.filter(ev => {
+      const matchCategory = checked.categories.length === 0 || checked.categories.includes(ev.categorie_principale) || checked.categories.includes(ev.categorie_secondaire);
+      const matchTheme = checked.themes.length === 0 || checked.themes.includes(ev.theme);
+      const matchMotsCles = checked.motscles.length === 0 || (ev.mots_cles || []).some(mc => checked.motscles.includes(mc));
+      return matchCategory && matchTheme && matchMotsCles;
+    });
+  }
+
+  const visibleIds = new Set(matchedEvents.map(ev => ev.id));
+  updateFriseFilteredEvents(visibleIds);
+
   if (activeGroups.length === 1) {
     const [activeGroup, selectedValues] = activeGroups[0];
-
-    const matchedEvents = new Set();
-    events.forEach(ev => {
-      let match = false;
-      if (activeGroup === 'categories') {
-        match = selectedValues.includes(ev.categorie_principale) || selectedValues.includes(ev.categorie_secondaire);
-      } else if (activeGroup === 'themes') {
-        match = selectedValues.includes(ev.theme);
-      } else if (activeGroup === 'motscles') {
-        match = (ev.mots_cles || []).some(mc => selectedValues.includes(mc));
-      }
-      if (match) matchedEvents.add(ev);
-    });
-
     const available = {
       categories: new Set(),
       themes: new Set(),
@@ -281,35 +249,10 @@ function updateFilterVisibility() {
   }
 }
 
-    const filterMap = {
-      categories: new Map(),
-      themes: new Map(),
-      motscles: new Map()
-    };
-
-    events.forEach(ev => {
-      [ev.categorie_principale, ev.categorie_secondaire].filter(Boolean).forEach(cat => {
-        if (!filterMap.categories.has(cat)) filterMap.categories.set(cat, []);
-        filterMap.categories.get(cat).push(ev);
-      });
-      if (!filterMap.themes.has(ev.theme)) filterMap.themes.set(ev.theme, []);
-      filterMap.themes.get(ev.theme).push(ev);
-      (ev.mots_cles || []).forEach(mc => {
-        if (!filterMap.motscles.has(mc)) filterMap.motscles.set(mc, []);
-        filterMap.motscles.get(mc).push(ev);
-      });
-    });
-
-    createFilterUI('categories', 'filtres-categories', filterMap.categories.keys());
-    createFilterUI('themes', 'filtres-themes', filterMap.themes.keys());
-    createFilterUI('motscles', 'filtres-motscles', filterMap.motscles.keys());
-
-    document.getElementById("filtres-container").addEventListener("change", updateFilterVisibility);
-    
 const themes = [...new Set(events.map(ev => ev.theme))];
       generateThemeColors(themes);
 
-      const items = new vis.DataSet(events.map(ev => ({
+      originalItems = events.map(ev => ({
         id: ev.id,
         content: ev.titre,
         title: ev.titre,
@@ -319,7 +262,9 @@ const themes = [...new Set(events.map(ev => ev.theme))];
         className: ev.theme.replace(/\s+/g, '-').toLowerCase()
       })));
 
-      const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
+      const items = new vis.DataSet(originalItems);
+
+const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
         id: cat,
         content: ""
       })));
