@@ -146,6 +146,53 @@
   font-size: 0.9em;
 }
 
+
+.event-item {
+  border-left: 3px solid #ccc;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+  border-radius: 4px;
+}
+.event-item.main-year {
+  border-left-color: #007bff;
+  background-color: #eaf4ff;
+}
+.event-item h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+.event-item p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+.event-item.nearby {
+  opacity: 0.6;
+  font-style: italic;
+}
+#fiche-details {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+#fiche-details h4 {
+  font-size: 1.2rem;
+  color: #007bff;
+}
+#fiche-details p {
+  font-size: 0.95rem;
+  margin: 0.5rem 0;
+}
+#fiche-details a {
+  color: #007bff;
+  text-decoration: none;
+}
+#fiche-details a:hover {
+  text-decoration: underline;
+}
+
 </style>
 </head>
 <body>
@@ -467,7 +514,8 @@ function renderYears(years) {
   });
 }
 
-function renderEventsForYear(selectedYear) {
+
+function renderEventsForYear
   const center = document.getElementById('liste-evenements');
   center.innerHTML = '';
 
