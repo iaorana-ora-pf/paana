@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Contribuer - Paana</title>
+<title>A propos - Paana</title>
 <meta content="Paana - Base de connaissances sur la santé publique en Polynésie française" name="description"/>
 <link href="header-footer.css" rel="stylesheet"/>
 <style>
@@ -266,6 +266,16 @@
   margin-right: 8px;
   vertical-align: middle;
 }
+
+.pluriannuel-badge {
+  display: inline-block;
+  background-color: #007b7f;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  margin-left: 6px;
+  border-radius: 4px;
+}
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 </head>
@@ -335,72 +345,116 @@
 <div class="year" data-year="2023">2023</div>
 <div class="year" data-year="2024">2024</div>
 <div class="year" data-year="2025">2025</div></div>
-<div class="events-column">
-<div class="event theme-éducation-à-la-santé" data-years="1834,1835,1836,1837">
-<div class="event-date">1834 – 1837</div>
-<div><span class="theme-éducation-à-la-santé" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(52.5, 70%, 60%);"></span><strong>Événement santé publique 1</strong></div>
+<div class="events-column"><div id="message-attente" style="text-align:center; margin-top:3rem; font-style:italic; color:#666;">Aucun événement affiché. Sélectionnez une année dans la colonne de gauche.</div>
+<div class="event theme-éducation-à-la-santé" data-id="1" data-years="1834,1835,1836,1837">
+<div class="event-date nearby-date">1834 – 1837</div>
+<div><span class="theme-éducation-à-la-santé" style="background-color:hsl(52.5, 70%, 60%);"></span>
+<strong>Événement santé publique 1</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1834 – 1837</div>
 </div>
-<div class="event theme-épidémie" data-years="1850,1851,1852,1853">
-<div class="event-date">1850 – 1853</div>
-<div><span class="theme-épidémie" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(190.0, 70%, 60%);"></span><strong>Événement santé publique 2</strong></div>
+<div class="event theme-épidémie" data-id="2" data-years="1850,1851,1852,1853">
+<div class="event-date nearby-date">1850 – 1853</div>
+<div><span class="theme-épidémie" style="background-color:hsl(190.0, 70%, 60%);"></span>
+<strong>Événement santé publique 2</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1850 – 1853</div>
 </div>
-<div class="event theme-technologies-médicales" data-years="1875,1876,1877">
-<div class="event-date">1875 – 1877</div>
-<div><span class="theme-technologies-médicales" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(137.5, 70%, 60%);"></span><strong>Événement santé publique 3</strong></div>
+<div class="event theme-technologies-médicales" data-id="3" data-years="1875,1876,1877">
+<div class="event-date nearby-date">1875 – 1877</div>
+<div><span class="theme-technologies-médicales" style="background-color:hsl(137.5, 70%, 60%);"></span>
+<strong>Événement santé publique 3</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1875 – 1877</div>
 </div>
-<div class="event theme-nutrition" data-years="1901,1902,1903,1904">
-<div class="event-date">1901 – 1904</div>
-<div><span class="theme-nutrition" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(0.0, 70%, 60%);"></span><strong>Événement santé publique 4</strong></div>
+<div class="event theme-nutrition" data-id="4" data-years="1901,1902,1903,1904">
+<div class="event-date nearby-date">1901 – 1904</div>
+<div><span class="theme-nutrition" style="background-color:hsl(0.0, 70%, 60%);"></span>
+<strong>Événement santé publique 4</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1901 – 1904</div>
 </div>
-<div class="event theme-vaccination" data-years="1923,1924,1925,1926">
-<div class="event-date">1923 – 1926</div>
-<div><span class="theme-vaccination" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(275.0, 70%, 60%);"></span><strong>Événement santé publique 5</strong></div>
+<div class="event theme-vaccination" data-id="5" data-years="1923,1924,1925,1926">
+<div class="event-date nearby-date">1923 – 1926</div>
+<div><span class="theme-vaccination" style="background-color:hsl(275.0, 70%, 60%);"></span>
+<strong>Événement santé publique 5</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1923 – 1926</div>
 </div>
-<div class="event theme-éducation-à-la-santé" data-years="1935,1936">
-<div class="event-date">1935 – 1936</div>
-<div><span class="theme-éducation-à-la-santé" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(52.5, 70%, 60%);"></span><strong>Événement santé publique 6</strong></div>
+<div class="event theme-éducation-à-la-santé" data-id="6" data-years="1935,1936">
+<div class="event-date nearby-date">1935 – 1936</div>
+<div><span class="theme-éducation-à-la-santé" style="background-color:hsl(52.5, 70%, 60%);"></span>
+<strong>Événement santé publique 6</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1935 – 1936</div>
 </div>
-<div class="event theme-épidémie" data-years="1950,1951,1952">
-<div class="event-date">1950 – 1952</div>
-<div><span class="theme-épidémie" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(190.0, 70%, 60%);"></span><strong>Événement santé publique 7</strong></div>
+<div class="event theme-épidémie" data-id="7" data-years="1950,1951,1952">
+<div class="event-date nearby-date">1950 – 1952</div>
+<div><span class="theme-épidémie" style="background-color:hsl(190.0, 70%, 60%);"></span>
+<strong>Événement santé publique 7</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1950 – 1952</div>
 </div>
-<div class="event theme-technologies-médicales" data-years="1965,1966,1967">
-<div class="event-date">1965 – 1967</div>
-<div><span class="theme-technologies-médicales" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(137.5, 70%, 60%);"></span><strong>Événement santé publique 8</strong></div>
+<div class="event theme-technologies-médicales" data-id="8" data-years="1965,1966,1967">
+<div class="event-date nearby-date">1965 – 1967</div>
+<div><span class="theme-technologies-médicales" style="background-color:hsl(137.5, 70%, 60%);"></span>
+<strong>Événement santé publique 8</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1965 – 1967</div>
 </div>
-<div class="event theme-vaccination" data-years="1980,1981,1982,1983">
-<div class="event-date">1980 – 1983</div>
-<div><span class="theme-vaccination" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(275.0, 70%, 60%);"></span><strong>Événement santé publique 9</strong></div>
+<div class="event theme-vaccination" data-id="9" data-years="1980,1981,1982,1983">
+<div class="event-date nearby-date">1980 – 1983</div>
+<div><span class="theme-vaccination" style="background-color:hsl(275.0, 70%, 60%);"></span>
+<strong>Événement santé publique 9</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1980 – 1983</div>
 </div>
-<div class="event theme-nutrition" data-years="1995,1996,1997">
-<div class="event-date">1995 – 1997</div>
-<div><span class="theme-nutrition" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(0.0, 70%, 60%);"></span><strong>Événement santé publique 10</strong></div>
+<div class="event theme-nutrition" data-id="10" data-years="1995,1996,1997">
+<div class="event-date nearby-date">1995 – 1997</div>
+<div><span class="theme-nutrition" style="background-color:hsl(0.0, 70%, 60%);"></span>
+<strong>Événement santé publique 10</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">1995 – 1997</div>
 </div>
-<div class="event theme-éducation-à-la-santé" data-years="2005,2006">
-<div class="event-date">2005 – 2006</div>
-<div><span class="theme-éducation-à-la-santé" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(52.5, 70%, 60%);"></span><strong>Événement santé publique 11</strong></div>
+<div class="event theme-éducation-à-la-santé" data-id="11" data-years="2005,2006">
+<div class="event-date nearby-date">2005 – 2006</div>
+<div><span class="theme-éducation-à-la-santé" style="background-color:hsl(52.5, 70%, 60%);"></span>
+<strong>Événement santé publique 11</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">2005 – 2006</div>
 </div>
-<div class="event theme-technologies-médicales" data-years="2010,2011,2012">
-<div class="event-date">2010 – 2012</div>
-<div><span class="theme-technologies-médicales" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(137.5, 70%, 60%);"></span><strong>Événement santé publique 12</strong></div>
+<div class="event theme-technologies-médicales" data-id="12" data-years="2010,2011,2012">
+<div class="event-date nearby-date">2010 – 2012</div>
+<div><span class="theme-technologies-médicales" style="background-color:hsl(137.5, 70%, 60%);"></span>
+<strong>Événement santé publique 12</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">2010 – 2012</div>
 </div>
-<div class="event theme-épidémie" data-years="2015,2016,2017">
-<div class="event-date">2015 – 2017</div>
-<div><span class="theme-épidémie" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(190.0, 70%, 60%);"></span><strong>Événement santé publique 13</strong></div>
+<div class="event theme-épidémie" data-id="13" data-years="2015,2016,2017">
+<div class="event-date nearby-date">2015 – 2017</div>
+<div><span class="theme-épidémie" style="background-color:hsl(190.0, 70%, 60%);"></span>
+<strong>Événement santé publique 13</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">2015 – 2017</div>
 </div>
-<div class="event theme-vaccination" data-years="2018,2019,2020">
-<div class="event-date">2018 – 2020</div>
-<div><span class="theme-vaccination" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(275.0, 70%, 60%);"></span><strong>Événement santé publique 14</strong></div>
+<div class="event theme-vaccination" data-id="14" data-years="2018,2019,2020">
+<div class="event-date nearby-date">2018 – 2020</div>
+<div><span class="theme-vaccination" style="background-color:hsl(275.0, 70%, 60%);"></span>
+<strong>Événement santé publique 14</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">2018 – 2020</div>
 </div>
-<div class="event theme-éducation-à-la-santé" data-years="2022,2023,2024,2025">
-<div class="event-date">2022 – 2025</div>
-<div><span class="theme-éducation-à-la-santé" style="display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; vertical-align:middle;background-color: hsl(52.5, 70%, 60%);"></span><strong>Événement santé publique 15</strong></div>
-</div></div>
+<div class="event theme-éducation-à-la-santé" data-id="15" data-years="2022,2023,2024,2025">
+<div class="event-date nearby-date">2022 – 2025</div>
+<div><span class="theme-éducation-à-la-santé" style="background-color:hsl(52.5, 70%, 60%);"></span>
+<strong>Événement santé publique 15</strong>
+<span class="pluriannuel-badge">Pluriannuel</span>
+</div><div class="range-info" style="display:none; font-style:italic; color:#666; margin-top:2px;">2022 – 2025</div>
+</div>
+</div>
 <div class="fiche-column">
-<h3>Event Title</h3>
-<p>January 3, 1814</p>
-<img alt="Image mock" src="https://via.placeholder.com/300x150"/>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<h3 id="fiche-titre">Détails</h3>
+<div id="fiche-content">Cliquez sur un événement pour voir sa fiche complète.</div>
 </div>
 </div></main>
 <script>
@@ -412,11 +466,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function filterEvents(selectedYear) {
     eventElements.forEach(ev => {
-      const years = ev.dataset.years.split(",").map(Number);
-      const show = years.some(y => Math.abs(y - selectedYear) <= 3);
+      const years = ev.dataset.years ? ev.dataset.years.split(",").map(Number) : [];
       const isExact = years.includes(selectedYear);
-      ev.style.display = show ? "block" : "none";
-      ev.classList.toggle("nearby", show && !isExact);
+      const inRange = years.some(y => Math.abs(y - selectedYear) <= 3);
+      ev.style.display = inRange ? "block" : "none";
+      ev.classList.toggle("nearby", inRange && !isExact);
     });
   }
 
@@ -435,5 +489,78 @@ document.addEventListener("DOMContentLoaded", function () {
     filterEvents(initial);
   }
 });
+</script><script>
+document.addEventListener("DOMContentLoaded", function () {
+  const yearElements = document.querySelectorAll(".year");
+  const eventElements = document.querySelectorAll(".event");
+  const ficheTitle = document.getElementById("fiche-titre");
+  const ficheContent = document.getElementById("fiche-content");
+  const messageAttente = document.getElementById("message-attente");
+
+  eventElements.forEach(ev => ev.style.display = "none");
+
+  yearElements.forEach(yearEl => {
+    yearEl.addEventListener("click", () => {
+      document.querySelectorAll(".year.active").forEach(e => e.classList.remove("active"));
+      yearEl.classList.add("active");
+
+      const selected = parseInt(yearEl.dataset.year);
+      let anyVisible = false;
+
+      eventElements.forEach(ev => {
+        const years = ev.dataset.years ? ev.dataset.years.split(",").map(Number) : [];
+        const isExact = years.includes(selected);
+        const inRange = years.some(y => Math.abs(y - selected) <= 3);
+        const dateEl = ev.querySelector(".event-date");
+
+        if (inRange) {
+          ev.style.display = "block";
+          ev.classList.toggle("nearby", !isExact);
+          if (dateEl) dateEl.style.display = isExact ? "none" : "block";
+          anyVisible = true;
+        } else {
+          ev.style.display = "none";
+        }
+      });
+
+      if (messageAttente) {
+        messageAttente.style.display = anyVisible ? "none" : "block";
+      }
+    });
+  });
+
+  if (messageAttente) {
+    messageAttente.style.display = "block";
+  }
+});
+
+  const ranges = document.querySelectorAll(".range-info");
+  ranges.forEach(r => r.style.display = "none");
+
+  function filterEvents(selectedYear) {
+    let anyVisible = false;
+    eventElements.forEach(ev => {
+      const years = ev.dataset.years ? ev.dataset.years.split(",").map(Number) : [];
+      const isExact = years.includes(selectedYear);
+      const inRange = years.some(y => Math.abs(y - selectedYear) <= 3);
+      const dateEl = ev.querySelector(".event-date");
+      const rangeInfo = ev.querySelector(".range-info");
+
+      if (inRange) {
+        ev.style.display = "block";
+        ev.classList.toggle("nearby", !isExact);
+        if (dateEl) dateEl.style.display = isExact ? "none" : "block";
+        if (rangeInfo) rangeInfo.style.display = (isExact ? "block" : "none");
+        anyVisible = true;
+      } else {
+        ev.style.display = "none";
+        if (rangeInfo) rangeInfo.style.display = "none";
+      }
+    });
+
+    if (messageAttente) {
+      messageAttente.style.display = anyVisible ? "none" : "block";
+    }
+  }
 </script></body>
 </html>
