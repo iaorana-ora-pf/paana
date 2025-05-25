@@ -63,16 +63,17 @@ function showFiche(id) {
 
   document.getElementById("fiche-titre").textContent = ev.titre;
   document.getElementById("fiche-content").innerHTML = `
-    <p><strong>📅 Année(s):</strong> ${ev.annee_debut} - ${ev.annee_fin}</p>
-    <p><strong>🗂️ Catégorie principale:</strong> ${ev.categorie_principale}</p>
-    <p><strong>🗃️ Catégorie secondaire:</strong> ${ev.categorie_secondaire || '—'}</p>
-    <p><strong>🎨 Thème:</strong> ${ev.theme}</p>
-    <p><strong>🔖 Mots-clés:</strong> ${(ev.mots_cles || []).map(mc =>
-      `<a href="${decsLinks[mc] || '#'}" target="_blank" title="Voir dans DeCS">${mc}</a>`).join(', ') || '—'}</p>
-    <p><strong>📝 Description:</strong> ${ev.description}</p>
-    <p><strong>🔗 Source(s):</strong> ${ev.sources?.join(', ') || '—'}</p>
-    <p><strong>📚 Pour aller plus loin:</strong> <a href="${ev.en_savoir_plus}" target="_blank">Lien</a></p>
-  `;
+  <p><strong>📅 Année(s):</strong> ${ev.annee_debut} - ${ev.annee_fin}</p>
+  <p><strong>🗂️ Catégorie principale:</strong> ${ev.categorie_principale}</p>
+  <p><strong>🗃️ Catégorie secondaire:</strong> ${ev.categorie_secondaire || '—'}</p>
+  <p><strong>🎨 Thème:</strong> ${ev.theme}</p>
+  <p><strong>🔖 Mots-clés:</strong> ${(ev.mots_cles || []).map(mc =>
+    `<a href="${decsLinks[mc] || '#'}" target="_blank">${mc}</a>`
+  ).join(', ') || '—'}</p>
+  <p><strong>📝 Description:</strong> ${ev.description}</p>
+  <p><strong>🔗 Source(s):</strong> ${ev.sources?.join(', ') || '—'}</p>
+  <p><strong>📚 Pour aller plus loin:</strong> <a href="${ev.en_savoir_plus}" target="_blank">Lien</a></p>
+`;
 
   timeline.setSelection([id], { focus: false });
   timeline.moveTo(new Date(ev.annee_debut + '-01-01'), { animation: true });
