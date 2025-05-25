@@ -161,6 +161,8 @@ a[href*="decs.bvsalud.org"] {
 
 <script>
 
+
+
 let decsLinks = {};
 
 fetch('motscles-decs.json')
@@ -171,7 +173,13 @@ fetch('motscles-decs.json')
 
 // Utility to get the correct DeCS URL
 function getDeCSLink(keyword) {
-  return decsLinks[keyword] || `https://decs.bvsalud.org/fr/?q=${encodeURIComponent(keyword)}`;
+  if (decsLinks[keyword]) {
+    return `https://decs.bvsalud.org/fr/ths/page/${decsLinks[keyword]}`;
+  } else {
+    return `https://decs.bvsalud.org/fr/?q=${encodeURIComponent(keyword)}`;
+  }
+}
+`;
 }
 
   let currentThemeEvents = [];
