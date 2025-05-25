@@ -225,8 +225,8 @@ function createFilterUI(type, containerId, values) {
   container.innerHTML = "";
   [...values].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })).forEach(value => {
     const id = `${type}-${value.replace(/\s+/g, '_')}`;
-    const link = type === "motscles"
-  ? `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(value)}" target="_blank" title="Voir dans DeCS" style="margin-left: 6px;"><i class="fas fa-link"></i></a>`
+   const link = type === "motscles"
+  ? `<a href="https://decs.bvsalud.org/fr/?q=${encodeURIComponent(value)}" target="_blank" title="Voir dans DeCS" style="margin-left: 6px;"><i class="fas fa-link"></i></a>`
   : "";
 
 const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}${link}</label>`;
