@@ -57,6 +57,46 @@
       margin-bottom: 0;
       color: #050505;
     }
+
+ /* 🧱 Mise en page 3 colonnes */
+.three-column-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+#col-annees, #col-evenements, #col-fiche {
+  flex: 1;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  min-height: 400px;
+}
+
+#col-annees {
+  max-width: 120px;
+  overflow-y: auto;
+}
+
+#col-evenements {
+  flex: 2;
+}
+
+#col-fiche {
+  flex: 2;
+}
+
+/* 🧭 Responsive mobile */
+@media (max-width: 768px) {
+  .three-column-layout {
+    flex-direction: column;
+  }
+
+  #col-annees, #col-evenements, #col-fiche {
+    max-width: 100%;
+  }
+}
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
