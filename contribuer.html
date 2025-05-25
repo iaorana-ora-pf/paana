@@ -153,7 +153,7 @@
   let currentIndex = -1;
   let timeline;
   let events = [];
-
+  let originalItems = []; 
   function generateThemeColors(themes) {
     const style = document.createElement("style");
     document.head.appendChild(style);
@@ -225,7 +225,16 @@ function updateFilterVisibility() {
     categories: [],
     themes: [],
     motscles: []
-  };
+ const filtered = originalItems.filter(item => {
+  const ev = events.find(e => e.id === item.id);
+  const matchCat = checked.categories.length === 0 || checked.categories.includes(ev.categorie_principale) || checked.categories.includes(ev.categorie_secondaire);
+  const matchTheme = checked.themes.length === 0 || checked.themes.includes(ev.theme);
+  const matchMots = checked.motscles.length === 0 || (ev.mots_cles || []).some(m => checked.motscles.includes(m));
+  return matchCat && matchTheme && matchMots;
+});
+
+timeline.setItems(filtered);
+};
 
   document.querySelectorAll('#filtres-container input[type="checkbox"]:checked').forEach(cb => {
     checked[cb.dataset.type].push(cb.value);
@@ -309,15 +318,17 @@ function updateFilterVisibility() {
 const themes = [...new Set(events.map(ev => ev.theme))];
       generateThemeColors(themes);
 
-      const items = new vis.DataSet(events.map(ev => ({
-        id: ev.id,
-        content: ev.titre,
-        title: ev.titre,
-        start: ev.annee_debut + '-01-01',
-        end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
-        group: ev.categorie_principale,
-        className: ev.theme.replace(/\s+/g, '-').toLowerCase()
-      })));
+    originalItems = events.map(ev => ({
+  id: ev.id,
+  content: ev.titre,
+  title: ev.titre,
+  start: ev.annee_debut + '-01-01',
+  end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
+  group: ev.categorie_principale,
+  className: ev.theme.replace(/\\s+/g, '-').toLowerCase()
+}));
+
+const items = new vis.DataSet(originalItems);
 
       const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
         id: cat,
