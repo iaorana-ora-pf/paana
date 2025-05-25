@@ -183,6 +183,16 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
 
 let originalItems = [];
 
+function createFilterUI(type, containerId, values) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  [...values].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })).forEach(value => {
+    const id = `${type}-${value.replace(/\s+/g, '_')}`;
+    const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
+    container.insertAdjacentHTML('beforeend', html);
+  });
+}
+
 function updateFriseFilteredEvents(filteredIds) {
   const filtered = originalItems.filter(item => filteredIds.has(item.id));
   timeline.setItems(filtered.length > 0 ? filtered : []);
@@ -249,10 +259,65 @@ function updateFilterVisibility() {
   }
 }
 
+
+    originalItems = events.map(ev => ({
+      id: ev.id,
+      content: ev.titre,
+      title: ev.titre,
+      start: ev.annee_debut + '-01-01',
+      end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
+      group: ev.categorie_principale,
+      className: ev.theme.replace(/\s+/g, '-').toLowerCase()
+    }));
+
+    const items = new vis.DataSet(originalItems);
+
+    const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
+      id: cat,
+      content: ""
+    })));
+
+    timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
+      zoomMin: 1000 * 60 * 60 * 24 * 365,
+      zoomMax: 1000 * 60 * 60 * 24 * 365 * 150,
+      start: '1700-01-01',
+      end: '2035-01-01',
+      format: {
+        minorLabels: { year: 'YYYY' },
+        majorLabels: { year: '' }
+      }
+    });
+
+    const filterMap = {
+      categories: new Map(),
+      themes: new Map(),
+      motscles: new Map()
+    };
+
+    events.forEach(ev => {
+      [ev.categorie_principale, ev.categorie_secondaire].filter(Boolean).forEach(cat => {
+        if (!filterMap.categories.has(cat)) filterMap.categories.set(cat, []);
+        filterMap.categories.get(cat).push(ev);
+      });
+      if (!filterMap.themes.has(ev.theme)) filterMap.themes.set(ev.theme, []);
+      filterMap.themes.get(ev.theme).push(ev);
+      (ev.mots_cles || []).forEach(mc => {
+        if (!filterMap.motscles.has(mc)) filterMap.motscles.set(mc, []);
+        filterMap.motscles.get(mc).push(ev);
+      });
+    });
+
+    createFilterUI('categories', 'filtres-categories', filterMap.categories.keys());
+    createFilterUI('themes', 'filtres-themes', filterMap.themes.keys());
+    createFilterUI('motscles', 'filtres-motscles', filterMap.motscles.keys());
+
+    document.getElementById("filtres-container").addEventListener("change", updateFilterVisibility);
+    updateFilterVisibility();
+    
 const themes = [...new Set(events.map(ev => ev.theme))];
       generateThemeColors(themes);
 
-      originalItems = events.map(ev => ({
+      const items = new vis.DataSet(events.map(ev => ({
         id: ev.id,
         content: ev.titre,
         title: ev.titre,
@@ -262,9 +327,7 @@ const themes = [...new Set(events.map(ev => ev.theme))];
         className: ev.theme.replace(/\s+/g, '-').toLowerCase()
       })));
 
-      const items = new vis.DataSet(originalItems);
-
-const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
+      const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({
         id: cat,
         content: ""
       })));
@@ -307,3 +370,4 @@ const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_princip
 </script>
 </body>
 </html>
+
