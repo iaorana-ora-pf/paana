@@ -1,103 +1,28 @@
-
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Contribuer- Paana</title>
-<meta content="Paana - Base de connaissances sur la santé publique en Polynésie française" name="description"/>
-<link href="header-footer.css" rel="stylesheet"/>
-<style>
-    /* === BASE === */
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frise années dynamiques</title>
+  <style>
     body {
       margin: 0;
-      font-family: 'League Spartan', sans-serif;
-      background-color: #fdfdf0;
-      color: #050505;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* === MAIN CONTENT === */
-    main {
-      flex-grow: 1;
-      max-width: none;        /* enlever la limite ! */
-      width: 100%;
-      margin: 0;
-      padding: 1.5rem 0;      /* optionnel : enlever padding latéral */
-      background-color: #fdfdf0;
-      color: #050505;
-    }
-
-    main h2:first-of-type {
-      margin-top: 0.5rem;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      font-weight: bold;
-      margin-bottom: 2rem;
-    }
-
-    h2 {
-      color: #007b7f;
-      font-weight: bold;
-      margin-top: 2rem;
-    }
-
-    p {
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 1rem;
-      color: #050505;
-    }
-
-    main ul li {
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 0;
-      color: #050505;
-    }
-  
-
-
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background-color: #fafafa;
-    }
-
-    .timeline-layout {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
+      font-family: 'Arial', sans-serif;
     }
 
     .years-column {
       width: 120px;
-      background: white;
-      border-right: 1px solid #ddd;
-      position: relative;
       padding-left: 2rem;
+      border-right: 1px solid #ddd;
+      max-height: 600px; /* ≈ 15 années visibles */
       overflow-y: auto;
-    }
-
-    .years-column::before {
-      content: "";
-      position: absolute;
-      left: 1rem;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: #ccc;
+      background: white;
     }
 
     .year {
       padding: 0.75rem 1rem;
-      position: relative;
       cursor: pointer;
+      position: relative;
     }
 
     .year::before {
@@ -108,180 +33,60 @@
       transform: translateY(-50%);
       width: 10px;
       height: 10px;
+      background-color: #ccc;
       border-radius: 50%;
-      background: #ccc;
     }
 
     .year.active {
       font-weight: bold;
       font-size: 1.2rem;
-      color: #007bff;
+      color: #007b7f;
     }
 
     .year.active::before {
-      background: #007bff;
+      background-color: #007b7f;
       width: 12px;
       height: 12px;
     }
-
-    .events-column {
-      flex: 2;
-      background: #f9f9f9;
-      overflow-y: auto;
-      padding: 1rem;
-    }
-
-    .event {
-      background: white;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-      padding: 1rem;
-      display: flex;
-      gap: 1rem;
-      border-left: 4px solid #ccc;
-    }
-
-    .event.nearby {
-      opacity: 0.6;
-      font-style: italic;
-    }
-
-    .event-date {
-      font-weight: bold;
-      color: #555;
-      min-width: 70px;
-    }
-
-    .fiche-column {
-      width: 300px;
-      background: #fff;
-      padding: 1rem;
-      border-left: 1px solid #ddd;
-      overflow-y: auto;
-    }
-
-    .fiche-column h3 {
-      margin-top: 0;
-    }
-
-    .fiche-column img {
-      width: 100%;
-      height: auto;
-      border-radius: 6px;
-      margin: 1rem 0;
-    }
-
-    @media (max-width: 768px) {
-      .timeline-layout {
-        flex-direction: column;
-      }
-
-      .fiche-column {
-        width: 100%;
-      }
-
-      .years-column {
-        flex-direction: row;
-        width: 100%;
-        overflow-x: auto;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .events-column {
-        flex: unset;
-      }
-    }
-  
-
-
-.timeline-layout {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-  max-width: 95vw;
-  margin: 0 auto;
-}
-
-.years-column {
-  width: 100px;
-  flex-shrink: 0;
-  padding-left: 2rem;
-  background: white;
-  border-right: 1px solid #ddd;
-  position: relative;
-  overflow-y: auto;
-}
-
-.events-column {
-  flex: 3;
-  background: #f9f9f9;
-  overflow-y: auto;
-  padding: 1.5rem;
-}
-
-.fiche-column {
-  flex: 2;
-  background: #fff;
-  padding: 1.5rem;
-  border-left: 1px solid #ddd;
-  overflow-y: auto;
-}
-
-
-
-.timeline-layout {
-  max-width: 100vw;
-  margin: 0;
-}
-</style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  </style>
 </head>
 <body>
-<header>
-<div class="logo">
-<span class="brand">Paana</span>
-<div class="trait"></div>
-<div class="signature">Emmanuelle RUPP-TERRIS</div>
-</div>
-<nav>
-<a href="a-propos.html">A PROPOS</a>
-<a href="contribuer.html">CONTRIBUER</a>
-<a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
-<a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
-<i class="fas fa-envelope fa-lg"></i>
-</a>
-</nav>
-</header>
-<main><div class="timeline-layout">
+
 <div class="years-column">
-<div class="year">1800</div>
-<div class="year">1801</div>
-<div class="year">1802</div>
-<div class="year">1803</div>
-<div class="year active">1814</div>
-<div class="year">1805</div>
+  <div class="year" data-year="1800">1800</div>
+  <div class="year" data-year="1801">1801</div>
+  <div class="year" data-year="1802">1802</div>
+  <div class="year" data-year="1803">1803</div>
+  <div class="year active" data-year="1814">1814</div> <!-- Active -->
+  <div class="year" data-year="1815">1815</div>
+  <div class="year" data-year="1816">1816</div>
+  <div class="year" data-year="1817">1817</div>
+  <div class="year" data-year="1818">1818</div>
+  <div class="year" data-year="1819">1819</div>
+  <div class="year" data-year="1820">1820</div>
+  <div class="year" data-year="1821">1821</div>
+  <div class="year" data-year="1822">1822</div>
+  <div class="year" data-year="1823">1823</div>
+  <div class="year" data-year="1824">1824</div>
+  <div class="year" data-year="1825">1825</div>
 </div>
-<div class="events-column">
-<div class="event">
-<div class="event-date">1814</div>
-<div>Event description</div>
-</div>
-<div class="event nearby">
-<div class="event-date">1813</div>
-<div>Past event description</div>
-</div>
-<div class="event nearby">
-<div class="event-date">1815</div>
-<div>Future event description</div>
-</div>
-</div>
-<div class="fiche-column">
-<h3>Event Title</h3>
-<p>January 3, 1814</p>
-<img alt="Image mock" src="https://via.placeholder.com/300x150"/>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</div>
-</div></main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const yearItems = document.querySelectorAll(".year");
+  let selectedYear = document.querySelector(".year.active");
+
+  yearItems.forEach(item => {
+    item.addEventListener("click", () => {
+      if (selectedYear) {
+        selectedYear.classList.remove("active");
+      }
+      item.classList.add("active");
+      selectedYear = item;
+    });
+  });
+});
+</script>
+
 </body>
 </html>
