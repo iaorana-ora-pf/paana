@@ -98,6 +98,19 @@ function createFilterUI(type, containerId, values) {
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
+  
+#filtres-container div {
+  margin: 1rem 0;
+}
+#filtres-container label {
+  margin-right: 1rem;
+  display: inline-block;
+}
+.filtre-desactive {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
@@ -117,6 +130,22 @@ function createFilterUI(type, containerId, values) {
 </header>
 
 <main>
+  
+  <div id="filtres-container" style="margin-bottom: 2rem;">
+    <div>
+      <strong>🗂️ Catégories</strong>
+      <div id="filtres-categories"></div>
+    </div>
+    <div>
+      <strong>🎨 Thèmes</strong>
+      <div id="filtres-themes"></div>
+    </div>
+    <div>
+      <strong>🏷️ Mots-clés</strong>
+      <div id="filtres-motscles"></div>
+    </div>
+  </div>
+
   <div id="frise-layout">
     <div id="timeline"></div>
     <aside id="fiche">
