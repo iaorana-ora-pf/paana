@@ -86,7 +86,20 @@
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
-  </style>
+  
+#filtres-container div {
+  margin: 1rem 0;
+}
+#filtres-container label {
+  margin-right: 1rem;
+  display: inline-block;
+}
+.filtre-desactive {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+</style>
 </head>
 <body>
 
@@ -105,6 +118,22 @@
 </header>
 
 <main>
+  
+  <div id="filtres-container" style="margin-bottom: 2rem;">
+    <div>
+      <strong>🗂️ Catégories</strong>
+      <div id="filtres-categories"></div>
+    </div>
+    <div>
+      <strong>🎨 Thèmes</strong>
+      <div id="filtres-themes"></div>
+    </div>
+    <div>
+      <strong>🏷️ Mots-clés</strong>
+      <div id="filtres-motscles"></div>
+    </div>
+  </div>
+
   <div id="frise-layout">
     <div id="timeline"></div>
     <aside id="fiche">
@@ -181,7 +210,6 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
 
       
 
-      // 🧠 Création des index
       const filterMap = {
         categories: new Map(),
         themes: new Map(),
@@ -201,7 +229,6 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
         });
       });
 
-      // ✅ Appel des filtres dynamiques avec tri alphabétique
       function createFilterUI(type, containerId, values) {
         const container = document.getElementById(containerId);
         container.innerHTML = "";
@@ -272,3 +299,4 @@ const themes = [...new Set(events.map(ev => ev.theme))];
 </script>
 </body>
 </html>
+
