@@ -1,13 +1,14 @@
 
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A propos - Paana</title>
-  <meta name="description" content="Paana - Base de connaissances sur la santé publique en Polynésie française">
-  <link rel="stylesheet" href="header-footer.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>A propos - Paana</title>
+<meta content="Paana - Base de connaissances sur la santé publique en Polynésie française" name="description"/>
+<link href="header-footer.css" rel="stylesheet"/>
+<style>
     /* === BASE === */
     body {
       margin: 0;
@@ -59,135 +60,185 @@
       color: #050505;
     }
   
-/* Colonne années - style ligne verticale */
-#col-annees {
-  position: relative;
-  padding-left: 2rem;
-  background: #fff;
-}
-
-#col-annees::before {
-  content: "";
-  position: absolute;
-  left: 1rem;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background-color: #ccc;
-}
-
-.annee-item {
-  position: relative;
-  padding: 0.5rem 0 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.annee-item::before {
-  content: "";
-  position: absolute;
-  left: -1.05rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  background-color: #ccc;
-  border-radius: 50%;
-}
-
-.annee-item.active {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #007bff;
-}
-
-.annee-item.active::before {
-  background-color: #007bff;
-  width: 12px;
-  height: 12px;
-}
 
 
-/* 🧱 Affichage horizontal en colonnes */
-.three-column-layout {
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #fafafa;
+    }
 
-#col-annees, #col-evenements, #col-fiche {
-  flex: 1;
-  min-height: 400px;
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border: 1px solid #ddd;
-}
+    .timeline-layout {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-#col-annees {
-  max-width: 120px;
-  overflow-y: auto;
-}
+    .years-column {
+      width: 120px;
+      background: white;
+      border-right: 1px solid #ddd;
+      position: relative;
+      padding-left: 2rem;
+      overflow-y: auto;
+    }
 
-#col-evenements {
-  flex: 2;
-}
+    .years-column::before {
+      content: "";
+      position: absolute;
+      left: 1rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #ccc;
+    }
 
-#col-fiche {
-  flex: 2;
-}
+    .year {
+      padding: 0.75rem 1rem;
+      position: relative;
+      cursor: pointer;
+    }
 
-@media (max-width: 768px) {
-  .three-column-layout {
-    flex-direction: column;
-  }
+    .year::before {
+      content: "";
+      position: absolute;
+      left: -1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ccc;
+    }
 
-  #col-annees, #col-evenements, #col-fiche {
-    max-width: 100%;
-  }
-}
+    .year.active {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #007bff;
+    }
 
-</style>
+    .year.active::before {
+      background: #007bff;
+      width: 12px;
+      height: 12px;
+    }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    .events-column {
+      flex: 2;
+      background: #f9f9f9;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .event {
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      display: flex;
+      gap: 1rem;
+      border-left: 4px solid #ccc;
+    }
+
+    .event.nearby {
+      opacity: 0.6;
+      font-style: italic;
+    }
+
+    .event-date {
+      font-weight: bold;
+      color: #555;
+      min-width: 70px;
+    }
+
+    .fiche-column {
+      width: 300px;
+      background: #fff;
+      padding: 1rem;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+    }
+
+    .fiche-column h3 {
+      margin-top: 0;
+    }
+
+    .fiche-column img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .timeline-layout {
+        flex-direction: column;
+      }
+
+      .fiche-column {
+        width: 100%;
+      }
+
+      .years-column {
+        flex-direction: row;
+        width: 100%;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .events-column {
+        flex: unset;
+      }
+    }
+  </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 </head>
 <body>
-
 <header>
-  <div class="logo">
-    <span class="brand">Paana</span>
-    <div class="trait"></div>
-    <div class="signature">Emmanuelle RUPP-TERRIS</div>
-  </div>
-  <nav>
-    <a href="a-propos.html">A PROPOS</a>
-    <a href="contribuer.html">CONTRIBUER</a>
-    <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
-    <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
-      <i class="fas fa-envelope fa-lg"></i>
-    </a>
-  </nav>
-</header>
-
-<main>
-  <!-- contenu dynamique ou de frise viendra ici -->
-
-<div id="frise-layout" class="three-column-layout">
-  <aside id="col-annees">
-    <h3>Années</h3>
-    <div id="liste-annees"></div>
-  </aside>
-  <section id="col-evenements">
-    <h3>Événements</h3>
-    <div id="liste-evenements"></div>
-  </section>
-  <aside id="col-fiche">
-    <h3>Détails</h3>
-    <div id="fiche-details">Sélectionnez un événement pour voir les détails.</div>
-  </aside>
+<div class="logo">
+<span class="brand">Paana</span>
+<div class="trait"></div>
+<div class="signature">Emmanuelle RUPP-TERRIS</div>
 </div>
-
-</main>
-
+<nav>
+<a href="a-propos.html">A PROPOS</a>
+<a href="contribuer.html">CONTRIBUER</a>
+<a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
+<a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
+<i class="fas fa-envelope fa-lg"></i>
+</a>
+</nav>
+</header>
+<main><div class="timeline-layout">
+<div class="years-column">
+<div class="year">1800</div>
+<div class="year">1801</div>
+<div class="year">1802</div>
+<div class="year">1803</div>
+<div class="year active">1814</div>
+<div class="year">1805</div>
+</div>
+<div class="events-column">
+<div class="event">
+<div class="event-date">1814</div>
+<div>Event description</div>
+</div>
+<div class="event nearby">
+<div class="event-date">1813</div>
+<div>Past event description</div>
+</div>
+<div class="event nearby">
+<div class="event-date">1815</div>
+<div>Future event description</div>
+</div>
+</div>
+<div class="fiche-column">
+<h3>Event Title</h3>
+<p>January 3, 1814</p>
+<img alt="Image mock" src="https://via.placeholder.com/300x150"/>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+</div>
+</div></main>
 </body>
 </html>
