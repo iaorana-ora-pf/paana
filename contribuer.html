@@ -62,26 +62,30 @@ function showFiche(id) {
   currentIndex = currentThemeEvents.findIndex(e => e.id == id);
 
   document.getElementById("fiche-titre").textContent = ev.titre;
-  document.getElementById("fiche-content").innerHTML = \`
-    <p><strong>📅 Année(s):</strong> \${ev.annee_debut} - \${ev.annee_fin}</p>
-    <p><strong>🗂️ Catégorie principale:</strong> \${ev.categorie_principale}</p>
-    <p><strong>🗃️ Catégorie secondaire:</strong> \${ev.categorie_secondaire || '—'}</p>
-    <p><strong>🎨 Thème:</strong> \${ev.theme}</p>
-    <p><strong>🔖 Mots-clés:</strong> \${(ev.mots_cles || []).map(mc => \`<a href="\${decsLinks[mc] || '#'}" target="_blank">\${mc}</a>\`).join(', ') || '—'}</p>
-    <p><strong>📝 Description:</strong> \${ev.description}</p>
-    <p><strong>🔗 Source(s):</strong> \${ev.sources?.join(', ') || '—'}</p>
-    <p><strong>📚 Pour aller plus loin:</strong> <a href="\${ev.en_savoir_plus}" target="_blank">Lien</a></p>
-  \`;
+  document.getElementById("fiche-content").innerHTML = `
+    <p><strong>📅 Année(s):</strong> ${ev.annee_debut} - ${ev.annee_fin}</p>
+    <p><strong>🗂️ Catégorie principale:</strong> ${ev.categorie_principale}</p>
+    <p><strong>🗃️ Catégorie secondaire:</strong> ${ev.categorie_secondaire || '—'}</p>
+    <p><strong>🎨 Thème:</strong> ${ev.theme}</p>
+    <p><strong>🔖 Mots-clés:</strong> ${(ev.mots_cles || []).map(mc =>
+      `<a href="${decsLinks[mc] || '#'}" target="_blank" title="Voir dans DeCS">${mc}</a>`).join(', ') || '—'}</p>
+    <p><strong>📝 Description:</strong> ${ev.description}</p>
+    <p><strong>🔗 Source(s):</strong> ${ev.sources?.join(', ') || '—'}</p>
+    <p><strong>📚 Pour aller plus loin:</strong> <a href="${ev.en_savoir_plus}" target="_blank">Lien</a></p>
+  `;
+
+  timeline.setSelection([id], { focus: false });
+  timeline.moveTo(new Date(ev.annee_debut + '-01-01'), { animation: true });
 }
 
 function createFilterUI(type, containerId, values) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
   [...values].sort().forEach(value => {
-    const id = \`\${type}-\${value.replace(/\s+/g, '_')}\`;
+    const id = `${type}-${value.replace(/\s+/g, '_')}`;
     const link = type === "motscles" && decsLinks[value]
-      ? \`<a href="\${decsLinks[value]}" target="_blank" style="margin-left: 6px;"><i class="fas fa-link"></i></a>\` : "";
-    const html = \`<label><input type="checkbox" data-type="\${type}" value="\${value}" id="\${id}"> \${value}\${link}</label>\`;
+      ? `<a href="${decsLinks[value]}" target="_blank" style="margin-left: 6px;" title="Voir dans DeCS"><i class="fas fa-link"></i></a>` : "";
+    const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}${link}</label>`;
     container.insertAdjacentHTML('beforeend', html);
   });
 }
