@@ -6,6 +6,60 @@
   <title>Frise Chronologique - Paana</title>
   <meta name="description" content="Frise dynamique basée sur événements.json">
   <link rel="stylesheet" href="header-footer.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'League Spartan', sans-serif;
+      background-color: #fdfdf0;
+      color: #050505;
+    }
+    .timeline-layout {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .years-column {
+      width: 120px;
+      background: white;
+      border-right: 1px solid #ddd;
+      padding-left: 2rem;
+      overflow-y: auto;
+    }
+    .year {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+    }
+    .year.active {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #007b7f;
+    }
+    .events-column {
+      flex: 3;
+      background: #f9f9f9;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+    .event {
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-left: 4px solid #ccc;
+    }
+    .event.nearby {
+      opacity: 0.5;
+      font-style: italic;
+    }
+    .fiche-column {
+      flex: 2;
+      background: #fff;
+      padding: 1.5rem;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -18,12 +72,9 @@
       <a href="a-propos.html">A PROPOS</a>
       <a href="contribuer.html">CONTRIBUER</a>
       <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
-      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
-        <i class="fas fa-envelope fa-lg"></i>
-      </a>
+      <a href="mailto:frise.sante.pf@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
     </nav>
   </header>
-
   <main>
     <div class="timeline-layout">
       <div class="years-column" id="years"></div>
@@ -38,8 +89,6 @@
       </div>
     </div>
   </main>
-
-  <!-- ✅ Un seul script ici -->
   <script src="script.js" defer></script>
 </body>
 </html>
