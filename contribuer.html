@@ -7,7 +7,6 @@
   <meta name="description" content="Paana - Base de connaissances sur la santé publique en Polynésie française">
   <link rel="stylesheet" href="header-footer.css" />
   <style>
-    /* === BASE === */
     body {
       margin: 0;
       font-family: 'League Spartan', sans-serif;
@@ -18,24 +17,12 @@
       min-height: 100vh;
     }
 
-    /* === MAIN CONTENT === */
     main {
       flex-grow: 1;
       max-width: 1200px;
       margin: 0 auto;
       padding: 1.5rem 2rem 2rem 2rem;
       background-color: #fdfdf0;
-      color: #050505;
-    }
-
-    main h2:first-of-type {
-      margin-top: 0.5rem;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      font-weight: bold;
-      margin-bottom: 2rem;
     }
 
     h2 {
@@ -44,98 +31,114 @@
       margin-top: 2rem;
     }
 
-    p {
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 1rem;
-      color: #050505;
+    /* 🧱 Mise en page 3 colonnes */
+    .three-column-layout {
+      display: flex;
+      flex-direction: row;
+      gap: 1.5rem;
+      align-items: flex-start;
     }
 
-    main ul li {
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 0;
-      color: #050505;
+    #col-annees, #col-evenements, #col-fiche {
+      flex: 1;
+      padding: 1rem;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      min-height: 400px;
     }
 
- /* 🧱 Mise en page 3 colonnes */
-.three-column-layout {
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
+    #col-annees {
+      max-width: 120px;
+      overflow-y: auto;
+    }
 
-#col-annees, #col-evenements, #col-fiche {
-  flex: 1;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  min-height: 400px;
-}
+    #col-evenements {
+      flex: 2;
+    }
 
-#col-annees {
-  max-width: 120px;
-  overflow-y: auto;
-}
+    #col-fiche {
+      flex: 2;
+    }
 
-#col-evenements {
-  flex: 2;
-}
+    @media (max-width: 768px) {
+      .three-column-layout {
+        flex-direction: column;
+      }
 
-#col-fiche {
-  flex: 2;
-}
+      #col-annees, #col-evenements, #col-fiche {
+        max-width: 100%;
+      }
+    }
 
-/* 🧭 Responsive mobile */
-@media (max-width: 768px) {
-  .three-column-layout {
-    flex-direction: column;
-  }
+    .annee-item {
+      padding: 6px;
+      cursor: pointer;
+    }
 
-  #col-annees, #col-evenements, #col-fiche {
-    max-width: 100%;
-  }
-}
+    .annee-item.active {
+      font-weight: bold;
+      color: #007bff;
+      font-size: 1.2rem;
+    }
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
 </head>
 <body>
 
   <header>
-  <div class="logo">
-  <span class="brand">Paana</span>
-  <div class="trait"></div>
-  <div class="signature">Emmanuelle RUPP-TERRIS</div>
-</div>
-  <nav>
-    <a href="a-propos.html">A PROPOS</a>
-    <a href="contribuer.html">CONTRIBUER</a>
-    <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
-    <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
-      <i class="fas fa-envelope fa-lg"></i>
-    </a>
-  </nav>
-</header>
+    <div class="logo">
+      <span class="brand">Paana</span>
+      <div class="trait"></div>
+      <div class="signature">Emmanuelle RUPP-TERRIS</div>
+    </div>
+    <nav>
+      <a href="a-propos.html">A PROPOS</a>
+      <a href="contribuer.html">CONTRIBUER</a>
+      <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
+      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
+        <i class="fas fa-envelope fa-lg"></i>
+      </a>
+    </nav>
+  </header>
 
   <main>
-<div id="frise-layout" class="three-column-layout">
-  <aside id="col-annees">
-    <h3>Années</h3>
-    <div id="liste-annees"></div>
-  </aside>
-  <section id="col-evenements">
-    <h3>Événements</h3>
-    <div id="liste-evenements"></div>
-  </section>
-  <aside id="col-fiche">
-    <h3>Détails</h3>
-    <div id="fiche-details">Sélectionnez un événement pour voir les détails.</div>
-  </aside>
-</div>
+    <div id="frise-layout" class="three-column-layout">
+      <aside id="col-annees">
+        <h3>Années</h3>
+        <div id="liste-annees"></div>
+      </aside>
+      <section id="col-evenements">
+        <h3>Événements</h3>
+        <div id="liste-evenements"></div>
+      </section>
+      <aside id="col-fiche">
+        <h3>Détails</h3>
+        <div id="fiche-details">Sélectionnez un événement pour voir les détails.</div>
+      </aside>
+    </div>
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Exemple simple : injecter une année et un événement fictif
+      const listeAnnees = document.getElementById('liste-annees');
+      const listeEvenements = document.getElementById('liste-evenements');
+      const ficheDetails = document.getElementById('fiche-details');
+
+      const testAnnee = document.createElement('div');
+      testAnnee.className = 'annee-item';
+      testAnnee.textContent = '2000';
+      testAnnee.addEventListener('click', () => {
+        document.querySelectorAll('.annee-item').forEach(e => e.classList.remove('active'));
+        testAnnee.classList.add('active');
+        listeEvenements.innerHTML = '<div><strong>2000</strong> – Création du service de santé publique</div>';
+        ficheDetails.innerHTML = '<h4>Création du service</h4><p><strong>📅</strong> 2000</p><p><strong>📝</strong> Un événement important dans l’histoire sanitaire.</p>';
+      });
+
+      listeAnnees.appendChild(testAnnee);
+    });
+  </script>
 
 </body>
 </html>
