@@ -1,163 +1,27 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <title>Frise - Paana</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="header-footer.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
-  <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; background: #fdfdf0; margin: 0; padding: 0; }
-    main { padding: 3rem; }
-    #frise-layout { display: flex; gap: 1rem; }
-    #timeline { flex: 2; height: 400px; border: 1px solid #ccc; }
-    #fiche { flex: 1; background: #f7f7f7; padding: 1rem; border-left: 2px solid #ccc; overflow-y: auto; font-size: 0.95rem; }
-    .filtre-desactive { opacity: 0.4; pointer-events: none; }
-    #filtres-container div { margin: 1rem 0; }
-    #filtres-container label { margin-right: 1rem; display: inline-block; }
-  </style>
-</head>
-<body>
-
-<main>
-  <p style="font-style: italic;">Les événements présentés sont regroupés par catégorie principale et colorés selon leur thème.</p>
-  <div id="filtres-container">
-    <div><strong>Catégories</strong> <div id="filtres-categories"></div></div>
-    <div><strong>Thèmes</strong> <div id="filtres-themes"></div></div>
-    <div><strong>Mots-clés (issus du thésaurus DeCS)</strong> <div id="filtres-motscles"></div></div>
-  </div>
-  <div id="frise-layout">
-    <div id="timeline"></div>
-    <aside id="fiche">
-      <h2 id="fiche-titre">Détails de l’événement</h2>
-      <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
-      <div id="fiche-theme-list"></div>
-      <div id="fiche-controls" style="display:none;">
-        <button id="prevBtn">⬅️</button>
-        <button id="nextBtn">➡️</button>
-      </div>
-    </aside>
-  </div>
-</main>
 
 <script>
-let currentThemeEvents = [], currentIndex = -1, timeline, events = [], originalItems = [], decsLinks = {};
-
-function generateThemeColors(themes) {
-  const style = document.createElement("style");
-  document.head.appendChild(style);
-  themes.forEach((theme, i) => {
-    const cls = theme.replace(/\s+/g, '-').toLowerCase();
-    const hue = (i * 137.5) % 360;
-    style.sheet.insertRule(`.${cls} { background-color: hsl(${hue}, 70%, 60%) !important; color: white !important; font-weight: bold; }`, style.sheet.cssRules.length);
-  });
-}
-
-function showFiche(id) {
-  const ev = events.find(e => e.id == id);
-  if (!ev) return;
-  currentThemeEvents = events.filter(e => e.theme === ev.theme);
-  currentIndex = currentThemeEvents.findIndex(e => e.id == id);
-
-  document.getElementById("fiche-titre").textContent = ev.titre;
-  document.getElementById("fiche-content").innerHTML = `
-  <p><strong>📅 Année(s):</strong> ${ev.annee_debut} - ${ev.annee_fin}</p>
-  <p><strong>🗂️ Catégorie principale:</strong> ${ev.categorie_principale}</p>
-  <p><strong>🗃️ Catégorie secondaire:</strong> ${ev.categorie_secondaire || '—'}</p>
-  <p><strong>🎨 Thème:</strong> ${ev.theme}</p>
-  <p><strong>🔖 Mots-clés:</strong> ${(ev.mots_cles || []).map(mc =>
-    `<a href="${decsLinks[mc] || '#'}" target="_blank">${mc}</a>`
-  ).join(', ') || '—'}</p>
-  <p><strong>📝 Description:</strong> ${ev.description}</p>
-  <p><strong>🔗 Source(s):</strong> ${ev.sources?.join(', ') || '—'}</p>
-  <p><strong>📚 Pour aller plus loin:</strong> <a href="${ev.en_savoir_plus}" target="_blank">Lien</a></p>
+// ... inside showFiche:
+document.getElementById("fiche-content").innerHTML = `
+  ...
+  <p><strong>🔖 Mots-clés :</strong> ${
+    event.mots_cles?.map(mc =>
+      `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(mc)}" target="_blank">${mc}</a>`
+    ).join(', ') || '—'
+  }</p>
+  ...
 `;
 
-  timeline.setSelection([id], { focus: false });
-  timeline.moveTo(new Date(ev.annee_debut + '-01-01'), { animation: true });
-}
-
+// ... inside createFilterUI:
 function createFilterUI(type, containerId, values) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
-  [...values].sort().forEach(value => {
+  [...values].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })).forEach(value => {
     const id = `${type}-${value.replace(/\s+/g, '_')}`;
-    const link = type === "motscles" && decsLinks[value]
-      ? `<a href="${decsLinks[value]}" target="_blank" style="margin-left: 6px;" title="Voir dans DeCS"><i class="fas fa-link"></i></a>` : "";
+    const link = type === "motscles"
+      ? `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(value)}" target="_blank" title="Voir dans DeCS" style="margin-left: 6px;"><i class="fas fa-link"></i></a>`
+      : "";
     const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}${link}</label>`;
     container.insertAdjacentHTML('beforeend', html);
   });
 }
-
-function updateFilterVisibility() {
-  const checked = { categories: [], themes: [], motscles: [] };
-  document.querySelectorAll('#filtres-container input[type="checkbox"]:checked').forEach(cb => checked[cb.dataset.type].push(cb.value));
-  const filtered = originalItems.filter(item => {
-    const ev = events.find(e => e.id === item.id);
-    const matchCat = checked.categories.length === 0 || checked.categories.includes(ev.categorie_principale) || checked.categories.includes(ev.categorie_secondaire);
-    const matchTheme = checked.themes.length === 0 || checked.themes.includes(ev.theme);
-    const matchMots = checked.motscles.length === 0 || (ev.mots_cles || []).some(m => checked.motscles.includes(m));
-    return matchCat && matchTheme && matchMots;
-  });
-  timeline.setItems(filtered);
-}
-
-Promise.all([
-  fetch('evenements.json').then(res => res.json()),
-  fetch('decs_mapping.json').then(res => res.json())
-]).then(([eventData, decsData]) => {
-  events = eventData;
-  decsLinks = decsData;
-
-  const themes = [...new Set(events.map(ev => ev.theme))];
-  generateThemeColors(themes);
-
-  originalItems = events.map(ev => ({
-    id: ev.id,
-    content: ev.titre,
-    title: ev.titre,
-    start: ev.annee_debut + '-01-01',
-    end: ev.annee_fin !== ev.annee_debut ? ev.annee_fin + '-01-01' : null,
-    group: ev.categorie_principale,
-    className: ev.theme.replace(/\s+/g, '-').toLowerCase()
-  }));
-
-  const items = new vis.DataSet(originalItems);
-  const groups = new vis.DataSet([...new Set(events.map(ev => ev.categorie_principale))].map(cat => ({ id: cat, content: "" })));
-  timeline = new vis.Timeline(document.getElementById('timeline'), items, groups, {
-    zoomMin: 1000 * 60 * 60 * 24 * 365,
-    zoomMax: 1000 * 60 * 60 * 24 * 365 * 150,
-    start: '1700-01-01',
-    end: '2035-01-01'
-  });
-
-  timeline.on('select', (props) => {
-    if (props.items.length > 0) showFiche(props.items[0]);
-  });
-
-  const filterMap = { categories: new Map(), themes: new Map(), motscles: new Map() };
-  events.forEach(ev => {
-    [ev.categorie_principale, ev.categorie_secondaire].filter(Boolean).forEach(cat => {
-      if (!filterMap.categories.has(cat)) filterMap.categories.set(cat, []);
-      filterMap.categories.get(cat).push(ev);
-    });
-    if (!filterMap.themes.has(ev.theme)) filterMap.themes.set(ev.theme, []);
-    filterMap.themes.get(ev.theme).push(ev);
-    (ev.mots_cles || []).forEach(mc => {
-      if (!filterMap.motscles.has(mc)) filterMap.motscles.set(mc, []);
-      filterMap.motscles.get(mc).push(ev);
-    });
-  });
-
-  createFilterUI('categories', 'filtres-categories', filterMap.categories.keys());
-  createFilterUI('themes', 'filtres-themes', filterMap.themes.keys());
-  createFilterUI('motscles', 'filtres-motscles', filterMap.motscles.keys());
-  document.getElementById("filtres-container").addEventListener("change", updateFilterVisibility);
-  updateFilterVisibility();
-});
 </script>
-
-</body>
-</html>
