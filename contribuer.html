@@ -1,12 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contribuer - Paana</title>
+  <title>A propos - Paana</title>
   <meta name="description" content="Paana - Base de connaissances sur la santé publique en Polynésie française">
   <link rel="stylesheet" href="header-footer.css" />
   <style>
+    /* === BASE === */
     body {
       margin: 0;
       font-family: 'League Spartan', sans-serif;
@@ -17,12 +19,24 @@
       min-height: 100vh;
     }
 
+    /* === MAIN CONTENT === */
     main {
       flex-grow: 1;
       max-width: 1200px;
       margin: 0 auto;
       padding: 1.5rem 2rem 2rem 2rem;
       background-color: #fdfdf0;
+      color: #050505;
+    }
+
+    main h2:first-of-type {
+      margin-top: 0.5rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
     }
 
     h2 {
@@ -31,114 +45,149 @@
       margin-top: 2rem;
     }
 
-    /* 🧱 Mise en page 3 colonnes */
-    .three-column-layout {
-      display: flex;
-      flex-direction: row;
-      gap: 1.5rem;
-      align-items: flex-start;
+    p {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      color: #050505;
     }
 
-    #col-annees, #col-evenements, #col-fiche {
-      flex: 1;
-      padding: 1rem;
-      background-color: #f5f5f5;
-      border: 1px solid #ddd;
-      min-height: 400px;
+    main ul li {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 0;
+      color: #050505;
     }
+  
+/* Colonne années - style ligne verticale */
+#col-annees {
+  position: relative;
+  padding-left: 2rem;
+  background: #fff;
+}
 
-    #col-annees {
-      max-width: 120px;
-      overflow-y: auto;
-    }
+#col-annees::before {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ccc;
+}
 
-    #col-evenements {
-      flex: 2;
-    }
+.annee-item {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
 
-    #col-fiche {
-      flex: 2;
-    }
+.annee-item::before {
+  content: "";
+  position: absolute;
+  left: -1.05rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
 
-    @media (max-width: 768px) {
-      .three-column-layout {
-        flex-direction: column;
-      }
+.annee-item.active {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #007bff;
+}
 
-      #col-annees, #col-evenements, #col-fiche {
-        max-width: 100%;
-      }
-    }
+.annee-item.active::before {
+  background-color: #007bff;
+  width: 12px;
+  height: 12px;
+}
 
-    .annee-item {
-      padding: 6px;
-      cursor: pointer;
-    }
 
-    .annee-item.active {
-      font-weight: bold;
-      color: #007bff;
-      font-size: 1.2rem;
-    }
-  </style>
+/* 🧱 Affichage horizontal en colonnes */
+.three-column-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+#col-annees, #col-evenements, #col-fiche {
+  flex: 1;
+  min-height: 400px;
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border: 1px solid #ddd;
+}
+
+#col-annees {
+  max-width: 120px;
+  overflow-y: auto;
+}
+
+#col-evenements {
+  flex: 2;
+}
+
+#col-fiche {
+  flex: 2;
+}
+
+@media (max-width: 768px) {
+  .three-column-layout {
+    flex-direction: column;
+  }
+
+  #col-annees, #col-evenements, #col-fiche {
+    max-width: 100%;
+  }
+}
+
+</style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
-  <header>
-    <div class="logo">
-      <span class="brand">Paana</span>
-      <div class="trait"></div>
-      <div class="signature">Emmanuelle RUPP-TERRIS</div>
-    </div>
-    <nav>
-      <a href="a-propos.html">A PROPOS</a>
-      <a href="contribuer.html">CONTRIBUER</a>
-      <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
-      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
-        <i class="fas fa-envelope fa-lg"></i>
-      </a>
-    </nav>
-  </header>
+<header>
+  <div class="logo">
+    <span class="brand">Paana</span>
+    <div class="trait"></div>
+    <div class="signature">Emmanuelle RUPP-TERRIS</div>
+  </div>
+  <nav>
+    <a href="a-propos.html">A PROPOS</a>
+    <a href="contribuer.html">CONTRIBUER</a>
+    <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
+    <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
+      <i class="fas fa-envelope fa-lg"></i>
+    </a>
+  </nav>
+</header>
 
-  <main>
-    <div id="frise-layout" class="three-column-layout">
-      <aside id="col-annees">
-        <h3>Années</h3>
-        <div id="liste-annees"></div>
-      </aside>
-      <section id="col-evenements">
-        <h3>Événements</h3>
-        <div id="liste-evenements"></div>
-      </section>
-      <aside id="col-fiche">
-        <h3>Détails</h3>
-        <div id="fiche-details">Sélectionnez un événement pour voir les détails.</div>
-      </aside>
-    </div>
-  </main>
+<main>
+  <!-- contenu dynamique ou de frise viendra ici -->
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Exemple simple : injecter une année et un événement fictif
-      const listeAnnees = document.getElementById('liste-annees');
-      const listeEvenements = document.getElementById('liste-evenements');
-      const ficheDetails = document.getElementById('fiche-details');
+<div id="frise-layout" class="three-column-layout">
+  <aside id="col-annees">
+    <h3>Années</h3>
+    <div id="liste-annees"></div>
+  </aside>
+  <section id="col-evenements">
+    <h3>Événements</h3>
+    <div id="liste-evenements"></div>
+  </section>
+  <aside id="col-fiche">
+    <h3>Détails</h3>
+    <div id="fiche-details">Sélectionnez un événement pour voir les détails.</div>
+  </aside>
+</div>
 
-      const testAnnee = document.createElement('div');
-      testAnnee.className = 'annee-item';
-      testAnnee.textContent = '2000';
-      testAnnee.addEventListener('click', () => {
-        document.querySelectorAll('.annee-item').forEach(e => e.classList.remove('active'));
-        testAnnee.classList.add('active');
-        listeEvenements.innerHTML = '<div><strong>2000</strong> – Création du service de santé publique</div>';
-        ficheDetails.innerHTML = '<h4>Création du service</h4><p><strong>📅</strong> 2000</p><p><strong>📝</strong> Un événement important dans l’histoire sanitaire.</p>';
-      });
-
-      listeAnnees.appendChild(testAnnee);
-    });
-  </script>
+</main>
 
 </body>
 </html>
