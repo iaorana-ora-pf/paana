@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frise Chronologique - Paana</title>
+  <meta name="description" content="Frise dynamique basée sur événements.json">
+  <link rel="stylesheet" href="header-footer.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span class="brand">Paana</span>
+      <div class="trait"></div>
+      <div class="signature">Emmanuelle RUPP-TERRIS</div>
+    </div>
+    <nav>
+      <a href="a-propos.html">A PROPOS</a>
+      <a href="contribuer.html">CONTRIBUER</a>
+      <a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
+      <a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
+        <i class="fas fa-envelope fa-lg"></i>
+      </a>
+    </nav>
+  </header>
+  <main>
+    <div class="timeline-layout">
+      <div class="years-column" id="years"></div>
+      <div class="events-column" id="events">
+        <div id="message-attente" style="text-align:center; margin-top:3rem; font-style:italic; color:#666;">
+          Aucun événement affiché. Sélectionnez une année dans la colonne de gauche.
+        </div>
+      </div>
+      <div class="fiche-column">
+        <h3 id="fiche-titre">Détails</h3>
+        <div id="fiche-content">Cliquez sur un événement pour voir sa fiche complète.</div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
