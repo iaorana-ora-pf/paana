@@ -11,11 +11,6 @@
   <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
   <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
   <style>
-
-a[href*="decs.bvsalud.org"] {
-  text-decoration: none;
-}
-
     html, body {
       margin: 0;
       padding: 0;
@@ -104,6 +99,53 @@ a[href*="decs.bvsalud.org"] {
   pointer-events: none;
 }
 
+
+/* 🧱 3 colonnes responsives */
+.three-column-layout {
+  display: flex;
+  flex-direction: row;
+  height: 70vh;
+  gap: 1rem;
+}
+#col-annees, #col-evenements, #col-fiche {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+}
+#col-annees {
+  max-width: 120px;
+}
+#col-evenements {
+  flex: 2;
+}
+#col-fiche {
+  flex: 2;
+}
+@media (max-width: 768px) {
+  .three-column-layout {
+    flex-direction: column;
+    height: auto;
+  }
+}
+.annee-item {
+  cursor: pointer;
+  padding: 6px 4px;
+}
+.annee-item.active {
+  font-weight: bold;
+  background-color: #d0f0f3;
+}
+.event-item {
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.event-item.nearby {
+  opacity: 0.6;
+  font-size: 0.9em;
+}
+
 </style>
 </head>
 <body>
@@ -145,8 +187,20 @@ a[href*="decs.bvsalud.org"] {
   </div>
 </div>
 
-<div id="frise-layout">
-    <div id="timeline"></div>
+<div id="frise-layout" class="three-column-layout">
+  <aside id="col-annees">
+    <h3>Années</h3>
+    <div id="liste-annees"></div>
+  </aside>
+  <section id="col-evenements">
+    <h3>Événements</h3>
+    <div id="liste-evenements"></div>
+  </section>
+  <aside id="col-fiche">
+    <h3>Détails</h3>
+    <div id="fiche-details">Sélectionnez un événement pour voir les détails.</div>
+  </aside>
+    
     <aside id="fiche">
       <h2 id="fiche-titre">Détails de l’événement</h2>
       <div id="fiche-content">Cliquez sur un événement pour voir les détails.</div>
@@ -162,7 +216,7 @@ a[href*="decs.bvsalud.org"] {
 <script>
   let currentThemeEvents = [];
   let currentIndex = -1;
-  let timeline;
+  let // timeline; (désactivé)
   let events = [];
   let originalItems = []; 
   function generateThemeColors(themes) {
@@ -194,9 +248,7 @@ a[href*="decs.bvsalud.org"] {
       <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
       <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
       <p><strong>🎨 Thème :</strong> ${event.theme}</p>
-      <p><strong>🔖 Mots-clés :</strong> ${
-  event.mots_cles?.map(mc => `${mc} <a href="https://decs.bvsalud.org/fr/?q=${encodeURIComponent(mc)}" target="_blank">🔗</a>`).join(', ') || '—'
-}</p>
+      <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.join(', ') || '—'}</p>
       <p><strong>📝 Description :</strong> ${event.description}</p>
       <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
       <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
@@ -228,17 +280,7 @@ function createFilterUI(type, containerId, values) {
   container.innerHTML = "";
   [...values].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })).forEach(value => {
     const id = `${type}-${value.replace(/\s+/g, '_')}`;
-    let html = '';
-    if (type === 'motscles') {
-      const encoded = encodeURIComponent(value);
-      html = `
-        <label>
-          <input type="checkbox" data-type="${type}" value="${value}" id="${id}"> 
-          ${value} <a href="https://decs.bvsalud.org/fr/?q=${encoded}" target="_blank">🔗</a>
-        </label>`;
-    } else {
-      html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
-    }
+    const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
     container.insertAdjacentHTML('beforeend', html);
   });
 }
@@ -396,5 +438,71 @@ const items = new vis.DataSet(originalItems);
       updateFilterVisibility();
     });
 </script>
+<script>
+let events = [];
+
+function loadEvents() {
+  fetch('evenements.json')
+    .then(res => res.json())
+    .then(data => {
+      events = data;
+      const allYears = [...new Set(events.map(ev => parseInt(ev.annee_debut)))].sort((a, b) => a - b);
+      renderYears(allYears);
+    });
+}
+
+function renderYears(years) {
+  const container = document.getElementById('liste-annees');
+  container.innerHTML = '';
+  years.forEach(year => {
+    const div = document.createElement('div');
+    div.textContent = year;
+    div.className = 'annee-item';
+    div.addEventListener('click', () => {
+      document.querySelectorAll('.annee-item').forEach(item => item.classList.remove('active'));
+      div.classList.add('active');
+      renderEventsForYear(year);
+    });
+    container.appendChild(div);
+  });
+}
+
+function renderEventsForYear(selectedYear) {
+  const center = document.getElementById('liste-evenements');
+  center.innerHTML = '';
+
+  const range = [selectedYear - 2, selectedYear + 2];
+  const nearby = ev => ev.annee_debut >= range[0] && ev.annee_debut <= range[1];
+  const eventsInRange = events.filter(nearby);
+
+  eventsInRange.forEach(ev => {
+    const div = document.createElement('div');
+    div.className = 'event-item';
+    if (ev.annee_debut !== selectedYear) {
+      div.classList.add('nearby');
+    }
+    div.innerHTML = `<strong>${ev.annee_debut}</strong> – ${ev.titre}`;
+    div.addEventListener('click', () => showFiche(ev));
+    center.appendChild(div);
+  });
+}
+
+function showFiche(ev) {
+  const fiche = document.getElementById('fiche-details');
+  fiche.innerHTML = `
+    <h4>${ev.titre}</h4>
+    <p><strong>📅</strong> ${ev.annee_debut}${ev.annee_fin && ev.annee_fin !== ev.annee_debut ? ' - ' + ev.annee_fin : ''}</p>
+    <p><strong>🗂️</strong> ${ev.categorie_principale}</p>
+    <p><strong>🎨</strong> ${ev.theme}</p>
+    <p><strong>🔖</strong> ${(ev.mots_cles || []).join(', ')}</p>
+    <p><strong>📝</strong> ${ev.description}</p>
+    ${ev.sources ? `<p><strong>🔗</strong> ${ev.sources.join(', ')}</p>` : ''}
+    ${ev.en_savoir_plus ? `<p><a href="${ev.en_savoir_plus}" target="_blank">📚 En savoir plus</a></p>` : ''}
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', loadEvents);
+</script>
 </body>
 </html>
+
