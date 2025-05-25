@@ -86,20 +86,7 @@
     .vis-labelset, .vis-group-label {
       display: none !important;
     }
-  
-#filtres-container div {
-  margin: 1rem 0;
-}
-#filtres-container label {
-  margin-right: 1rem;
-  display: inline-block;
-}
-.filtre-desactive {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-</style>
+  </style>
 </head>
 <body>
 
@@ -118,23 +105,7 @@
 </header>
 
 <main>
-  
-<div id="filtres-container" style="margin-bottom: 2rem;">
-  <div>
-    <strong>🗂️ Catégories</strong>
-    <div id="filtres-categories"></div>
-  </div>
-  <div>
-    <strong>🎨 Thèmes</strong>
-    <div id="filtres-themes"></div>
-  </div>
-  <div>
-    <strong>🏷️ Mots-clés</strong>
-    <div id="filtres-motscles"></div>
-  </div>
-</div>
-
-<div id="frise-layout">
+  <div id="frise-layout">
     <div id="timeline"></div>
     <aside id="fiche">
       <h2 id="fiche-titre">Détails de l’événement</h2>
@@ -210,38 +181,68 @@ timeline.moveTo(new Date(event.annee_debut + '-01-01'), {animation: true});
 
       
 
-const filterMap = {
-  categories: new Map(),
-  themes: new Map(),
-  motscles: new Map()
-};
+function updateFilterVisibility() {
+  const checked = {
+    categories: [],
+    themes: [],
+    motscles: []
+  };
 
-events.forEach(ev => {
-  [ev.categorie_principale, ev.categorie_secondaire].filter(Boolean).forEach(cat => {
-    if (!filterMap.categories.has(cat)) filterMap.categories.set(cat, []);
-    filterMap.categories.get(cat).push(ev);
+  document.querySelectorAll('#filtres-container input[type="checkbox"]:checked').forEach(cb => {
+    checked[cb.dataset.type].push(cb.value);
   });
-  if (!filterMap.themes.has(ev.theme)) filterMap.themes.set(ev.theme, []);
-  filterMap.themes.get(ev.theme).push(ev);
-  (ev.mots_cles || []).forEach(mc => {
-    if (!filterMap.motscles.has(mc)) filterMap.motscles.set(mc, []);
-    filterMap.motscles.get(mc).push(ev);
-  });
-});
 
-function createFilterUI(type, containerId, values) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-  [...values].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })).forEach(value => {
-    const id = `${type}-${value.replace(/\s+/g, '_')}`;
-    const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
-    container.insertAdjacentHTML('beforeend', html);
-  });
+  const activeGroups = Object.entries(checked).filter(([_, arr]) => arr.length > 0);
+
+  if (activeGroups.length === 1) {
+    const [activeGroup, selectedValues] = activeGroups[0];
+
+    const matchedEvents = new Set();
+    events.forEach(ev => {
+      let match = false;
+      if (activeGroup === 'categories') {
+        match = selectedValues.includes(ev.categorie_principale) || selectedValues.includes(ev.categorie_secondaire);
+      } else if (activeGroup === 'themes') {
+        match = selectedValues.includes(ev.theme);
+      } else if (activeGroup === 'motscles') {
+        match = (ev.mots_cles || []).some(mc => selectedValues.includes(mc));
+      }
+      if (match) matchedEvents.add(ev);
+    });
+
+    const available = {
+      categories: new Set(),
+      themes: new Set(),
+      motscles: new Set()
+    };
+
+    matchedEvents.forEach(ev => {
+      [ev.categorie_principale, ev.categorie_secondaire].forEach(cat => cat && available.categories.add(cat));
+      ev.theme && available.themes.add(ev.theme);
+      (ev.mots_cles || []).forEach(mc => available.motscles.add(mc));
+    });
+
+    document.querySelectorAll('#filtres-container input[type="checkbox"]').forEach(cb => {
+      const val = cb.value;
+      const type = cb.dataset.type;
+      const label = cb.parentElement;
+
+      if (type === activeGroup) {
+        label.classList.remove('filtre-desactive');
+      } else {
+        if (available[type].has(val)) {
+          label.classList.remove('filtre-desactive');
+        } else {
+          label.classList.add('filtre-desactive');
+        }
+      }
+    });
+  } else {
+    document.querySelectorAll('#filtres-container label').forEach(label => label.classList.remove('filtre-desactive'));
+  }
 }
 
-createFilterUI('categories', 'filtres-categories', filterMap.categories.keys());
-createFilterUI('themes', 'filtres-themes', filterMap.themes.keys());
-createFilterUI('motscles', 'filtres-motscles', filterMap.motscles.keys());
+document.getElementById("filtres-container").addEventListener("change", updateFilterVisibility);
 
 const themes = [...new Set(events.map(ev => ev.theme))];
       generateThemeColors(themes);
@@ -299,4 +300,3 @@ const themes = [...new Set(events.map(ev => ev.theme))];
 </script>
 </body>
 </html>
-
