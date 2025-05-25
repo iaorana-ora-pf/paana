@@ -190,7 +190,7 @@
       <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
       <p><strong>🎨 Thème :</strong> ${event.theme}</p>
       <p><strong>🔖 Mots-clés :</strong> ${
-  event.mots_cles?.map(mc => `${mc} 🔗`).join(', ') || '—'
+  event.mots_cles?.map(mc => `${mc} <a href="https://decs.bvsalud.org/fr/?q=${encodeURIComponent(mc)}" target="_blank">🔗</a>`).join(', ') || '—'
 }</p>
       <p><strong>📝 Description :</strong> ${event.description}</p>
       <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
@@ -229,7 +229,7 @@ function createFilterUI(type, containerId, values) {
       html = `
         <label>
           <input type="checkbox" data-type="${type}" value="${value}" id="${id}"> 
-          ${value} 🔗
+          ${value} <a href="https://decs.bvsalud.org/fr/?q=${encoded}" target="_blank">🔗</a>
         </label>`;
     } else {
       html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
@@ -393,3 +393,4 @@ const items = new vis.DataSet(originalItems);
 </script>
 </body>
 </html>
+
