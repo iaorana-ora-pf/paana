@@ -1,28 +1,96 @@
+
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Frise verticale des années</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>A propos - Paana</title>
+<meta content="Paana - Base de connaissances sur la santé publique en Polynésie française" name="description"/>
+<link href="header-footer.css" rel="stylesheet"/>
+<style>
+    /* === BASE === */
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: 'League Spartan', sans-serif;
       background-color: #fdfdf0;
+      color: #050505;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    .container {
+    /* === MAIN CONTENT === */
+    main {
+      flex-grow: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 2rem 2rem;
+      background-color: #fdfdf0;
+      color: #050505;
+    }
+
+    main h2:first-of-type {
+      margin-top: 0.5rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      color: #007b7f;
+      font-weight: bold;
+      margin-top: 2rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      color: #050505;
+    }
+
+    main ul li {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 0;
+      color: #050505;
+    }
+  
+
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #fafafa;
+    }
+
+    .timeline-layout {
       display: flex;
       height: 100vh;
+      overflow: hidden;
     }
 
     .years-column {
       width: 120px;
-      padding-left: 2rem;
-      border-right: 1px solid #ddd;
       background: white;
+      border-right: 1px solid #ddd;
+      position: relative;
+      padding-left: 2rem;
       overflow-y: auto;
-      max-height: 600px; /* Limite ≈ 15 années visibles */
+    }
+
+    .years-column::before {
+      content: "";
+      position: absolute;
+      left: 1rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #ccc;
     }
 
     .year {
@@ -39,76 +107,353 @@
       transform: translateY(-50%);
       width: 10px;
       height: 10px;
-      background-color: #ccc;
       border-radius: 50%;
+      background: #ccc;
     }
 
     .year.active {
       font-weight: bold;
       font-size: 1.2rem;
-      color: #007b7f; /* Couleur du bandeau */
+      color: #007bff;
     }
 
     .year.active::before {
-      background-color: #007b7f;
+      background: #007bff;
       width: 12px;
       height: 12px;
     }
 
-    .placeholder {
-      flex: 1;
-      padding: 2rem;
+    .events-column {
+      flex: 2;
+      background: #f9f9f9;
+      overflow-y: auto;
+      padding: 1rem;
     }
-  </style>
+
+    .event {
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      display: flex;
+      gap: 1rem;
+      border-left: 4px solid #ccc;
+    }
+
+    .event.nearby {
+      opacity: 0.6;
+      font-style: italic;
+    }
+
+    .event-date {
+      font-weight: bold;
+      color: #555;
+      min-width: 70px;
+    }
+
+    .fiche-column {
+      width: 300px;
+      background: #fff;
+      padding: 1rem;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+    }
+
+    .fiche-column h3 {
+      margin-top: 0;
+    }
+
+    .fiche-column img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .timeline-layout {
+        flex-direction: column;
+      }
+
+      .fiche-column {
+        width: 100%;
+      }
+
+      .years-column {
+        flex-direction: row;
+        width: 100%;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .events-column {
+        flex: unset;
+      }
+    }
+  
+
+
+.timeline-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  max-width: 95vw;
+  margin: 0 auto;
+}
+
+.years-column {
+  width: 100px;
+  flex-shrink: 0;
+  padding-left: 2rem;
+  background: white;
+  border-right: 1px solid #ddd;
+  position: relative;
+  overflow-y: auto;
+}
+
+.events-column {
+  flex: 3;
+  background: #f9f9f9;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.fiche-column {
+  flex: 2;
+  background: #fff;
+  padding: 1.5rem;
+  border-left: 1px solid #ddd;
+  overflow-y: auto;
+}
+
+
+
+.timeline-layout {
+  max-width: 100vw;
+  margin: 0;
+}
+
+.years-column {
+  max-height: 600px;
+  overflow-y: auto;
+}
+.year.active {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #007b7f;
+}
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 </head>
 <body>
-
-<div class="container">
-  <div class="years-column" id="years">
-    <div class="year" data-year="1800">1800</div>
-    <div class="year" data-year="1801">1801</div>
-    <div class="year" data-year="1802">1802</div>
-    <div class="year" data-year="1803">1803</div>
-    <div class="year" data-year="1804">1804</div>
-    <div class="year active" data-year="1805">1805</div>
-    <div class="year" data-year="1806">1806</div>
-    <div class="year" data-year="1807">1807</div>
-    <div class="year" data-year="1808">1808</div>
-    <div class="year" data-year="1809">1809</div>
-    <div class="year" data-year="1810">1810</div>
-    <div class="year" data-year="1811">1811</div>
-    <div class="year" data-year="1812">1812</div>
-    <div class="year" data-year="1813">1813</div>
-    <div class="year" data-year="1814">1814</div>
-    <div class="year" data-year="1815">1815</div>
-  </div>
-
-  <div class="placeholder">
-    <h2>Zone centrale</h2>
-    <p>Ici s’afficheront les événements de l’année sélectionnée.</p>
-  </div>
+<header>
+<div class="logo">
+<span class="brand">Paana</span>
+<div class="trait"></div>
+<div class="signature">Emmanuelle RUPP-TERRIS</div>
 </div>
-
+<nav>
+<a href="a-propos.html">A PROPOS</a>
+<a href="contribuer.html">CONTRIBUER</a>
+<a href="https://forms.gle/PR8ZHvSXxLNYETtx9" target="_blank">SOUMETTRE</a>
+<a href="mailto:frise.sante.pf@gmail.com" title="Contacter par mail">
+<i class="fas fa-envelope fa-lg"></i>
+</a>
+</nav>
+</header>
+<main><div class="timeline-layout">
+<div class="years-column"><div class="year" data-year="1834">1834</div>
+<div class="year" data-year="1835">1835</div>
+<div class="year" data-year="1836">1836</div>
+<div class="year" data-year="1837">1837</div>
+<div class="year" data-year="1850">1850</div>
+<div class="year" data-year="1851">1851</div>
+<div class="year" data-year="1852">1852</div>
+<div class="year" data-year="1853">1853</div>
+<div class="year" data-year="1875">1875</div>
+<div class="year" data-year="1876">1876</div>
+<div class="year" data-year="1877">1877</div>
+<div class="year" data-year="1901">1901</div>
+<div class="year" data-year="1902">1902</div>
+<div class="year" data-year="1903">1903</div>
+<div class="year" data-year="1904">1904</div>
+<div class="year" data-year="1923">1923</div>
+<div class="year" data-year="1924">1924</div>
+<div class="year" data-year="1925">1925</div>
+<div class="year" data-year="1926">1926</div>
+<div class="year" data-year="1935">1935</div>
+<div class="year" data-year="1936">1936</div>
+<div class="year" data-year="1950">1950</div>
+<div class="year" data-year="1951">1951</div>
+<div class="year" data-year="1952">1952</div>
+<div class="year" data-year="1965">1965</div>
+<div class="year" data-year="1966">1966</div>
+<div class="year" data-year="1967">1967</div>
+<div class="year" data-year="1980">1980</div>
+<div class="year" data-year="1981">1981</div>
+<div class="year" data-year="1982">1982</div>
+<div class="year" data-year="1983">1983</div>
+<div class="year" data-year="1995">1995</div>
+<div class="year" data-year="1996">1996</div>
+<div class="year" data-year="1997">1997</div>
+<div class="year" data-year="2005">2005</div>
+<div class="year" data-year="2006">2006</div>
+<div class="year" data-year="2010">2010</div>
+<div class="year" data-year="2011">2011</div>
+<div class="year" data-year="2012">2012</div>
+<div class="year" data-year="2015">2015</div>
+<div class="year" data-year="2016">2016</div>
+<div class="year" data-year="2017">2017</div>
+<div class="year" data-year="2018">2018</div>
+<div class="year" data-year="2019">2019</div>
+<div class="year" data-year="2020">2020</div>
+<div class="year" data-year="2022">2022</div>
+<div class="year" data-year="2023">2023</div>
+<div class="year" data-year="2024">2024</div>
+<div class="year" data-year="2025">2025</div></div>
+<div class="events-column">
+<div class="event">
+<div class="event-date">1834 – 1837</div>
+<div>
+<strong>Événement santé publique 1</strong><br/>
+        Description approfondie de l'événement santé publique 1, en lien avec le thème Éducation à la santé.<br/>
+<a href="https://plus1.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1850 – 1853</div>
+<div>
+<strong>Événement santé publique 2</strong><br/>
+        Description approfondie de l'événement santé publique 2, en lien avec le thème Épidémie.<br/>
+<a href="https://plus2.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1875 – 1877</div>
+<div>
+<strong>Événement santé publique 3</strong><br/>
+        Description approfondie de l'événement santé publique 3, en lien avec le thème Technologies médicales.<br/>
+<a href="https://plus3.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1901 – 1904</div>
+<div>
+<strong>Événement santé publique 4</strong><br/>
+        Description approfondie de l'événement santé publique 4, en lien avec le thème Nutrition.<br/>
+<a href="https://plus4.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1923 – 1926</div>
+<div>
+<strong>Événement santé publique 5</strong><br/>
+        Description approfondie de l'événement santé publique 5, en lien avec le thème Vaccination.<br/>
+<a href="https://plus5.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1935 – 1936</div>
+<div>
+<strong>Événement santé publique 6</strong><br/>
+        Description approfondie de l'événement santé publique 6, en lien avec le thème Éducation à la santé.<br/>
+<a href="https://plus6.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1950 – 1952</div>
+<div>
+<strong>Événement santé publique 7</strong><br/>
+        Description approfondie de l'événement santé publique 7, en lien avec le thème Épidémie.<br/>
+<a href="https://plus7.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1965 – 1967</div>
+<div>
+<strong>Événement santé publique 8</strong><br/>
+        Description approfondie de l'événement santé publique 8, en lien avec le thème Technologies médicales.<br/>
+<a href="https://plus8.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1980 – 1983</div>
+<div>
+<strong>Événement santé publique 9</strong><br/>
+        Description approfondie de l'événement santé publique 9, en lien avec le thème Vaccination.<br/>
+<a href="https://plus9.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">1995 – 1997</div>
+<div>
+<strong>Événement santé publique 10</strong><br/>
+        Description approfondie de l'événement santé publique 10, en lien avec le thème Nutrition.<br/>
+<a href="https://plus10.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">2005 – 2006</div>
+<div>
+<strong>Événement santé publique 11</strong><br/>
+        Description approfondie de l'événement santé publique 11, en lien avec le thème Éducation à la santé.<br/>
+<a href="https://plus11.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">2010 – 2012</div>
+<div>
+<strong>Événement santé publique 12</strong><br/>
+        Description approfondie de l'événement santé publique 12, en lien avec le thème Technologies médicales.<br/>
+<a href="https://plus12.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">2015 – 2017</div>
+<div>
+<strong>Événement santé publique 13</strong><br/>
+        Description approfondie de l'événement santé publique 13, en lien avec le thème Épidémie.<br/>
+<a href="https://plus13.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">2018 – 2020</div>
+<div>
+<strong>Événement santé publique 14</strong><br/>
+        Description approfondie de l'événement santé publique 14, en lien avec le thème Vaccination.<br/>
+<a href="https://plus14.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+<div class="event">
+<div class="event-date">2022 – 2025</div>
+<div>
+<strong>Événement santé publique 15</strong><br/>
+        Description approfondie de l'événement santé publique 15, en lien avec le thème Éducation à la santé.<br/>
+<a href="https://plus15.sante.org" target="_blank">📚 En savoir plus</a>
+</div>
+</div>
+</div>
+<div class="fiche-column">
+<h3>Event Title</h3>
+<p>January 3, 1814</p>
+<img alt="Image mock" src="https://via.placeholder.com/300x150"/>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+</div>
+</div></main>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const years = document.querySelectorAll(".year");
-    let selectedYear = document.querySelector(".year.active");
+document.addEventListener("DOMContentLoaded", function () {
+  const years = document.querySelectorAll(".year");
+  let selectedYear = document.querySelector(".year.active");
 
-    years.forEach(year => {
-      year.addEventListener("click", () => {
-        if (selectedYear) {
-          selectedYear.classList.remove("active");
-        }
-        year.classList.add("active");
-        selectedYear = year;
-
-        // Logique future : filtrer événements, charger fiche, etc.
-        console.log("Année sélectionnée :", year.dataset.year);
-      });
+  years.forEach(year => {
+    year.addEventListener("click", () => {
+      if (selectedYear) selectedYear.classList.remove("active");
+      year.classList.add("active");
+      selectedYear = year;
     });
   });
-</script>
-
-</body>
+});
+</script></body>
 </html>
 
