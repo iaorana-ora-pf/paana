@@ -189,7 +189,10 @@
       <p><strong>🗂️ Catégorie principale :</strong> ${event.categorie_principale}</p>
       <p><strong>🗃️ Catégorie secondaire :</strong> ${event.categorie_secondaire || '—'}</p>
       <p><strong>🎨 Thème :</strong> ${event.theme}</p>
-      <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.join(', ') || '—'}</p>
+      <p><strong>🔖 Mots-clés :</strong> ${event.mots_cles?.map(mc =>
+    `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(mc)}" target="_blank">${mc}</a>`
+      ).join(', ') || '—'
+      }</p>
       <p><strong>📝 Description :</strong> ${event.description}</p>
       <p><strong>🔗 Source(s) :</strong> ${event.sources?.join(', ') || '—'}</p>
       <p><strong>📚 Pour aller plus loin :</strong> <a href="${event.en_savoir_plus}" target="_blank">Lien</a></p>
@@ -221,7 +224,11 @@ function createFilterUI(type, containerId, values) {
   container.innerHTML = "";
   [...values].sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' })).forEach(value => {
     const id = `${type}-${value.replace(/\s+/g, '_')}`;
-    const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}</label>`;
+    const link = type === "motscles"
+  ? `<a href="https://decs.bvsalud.org/fr/ths/?lang=fr&exact=true&desc=${encodeURIComponent(value)}" target="_blank" title="Voir dans DeCS" style="margin-left: 6px;"><i class="fas fa-link"></i></a>`
+  : "";
+
+const html = `<label><input type="checkbox" data-type="${type}" value="${value}" id="${id}"> ${value}${link}</label>`;
     container.insertAdjacentHTML('beforeend', html);
   });
 }
