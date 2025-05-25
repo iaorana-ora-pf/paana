@@ -3,26 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Frise années dynamiques</title>
+  <title>Frise verticale des années</title>
   <style>
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
+      background-color: #fdfdf0;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
     }
 
     .years-column {
       width: 120px;
       padding-left: 2rem;
       border-right: 1px solid #ddd;
-      max-height: 600px; /* ≈ 15 années visibles */
-      overflow-y: auto;
       background: white;
+      overflow-y: auto;
+      max-height: 600px; /* Limite ≈ 15 années visibles */
     }
 
     .year {
       padding: 0.75rem 1rem;
-      cursor: pointer;
       position: relative;
+      cursor: pointer;
     }
 
     .year::before {
@@ -40,7 +46,7 @@
     .year.active {
       font-weight: bold;
       font-size: 1.2rem;
-      color: #007b7f;
+      color: #007b7f; /* Couleur du bandeau */
     }
 
     .year.active::before {
@@ -48,45 +54,61 @@
       width: 12px;
       height: 12px;
     }
+
+    .placeholder {
+      flex: 1;
+      padding: 2rem;
+    }
   </style>
 </head>
 <body>
 
-<div class="years-column">
-  <div class="year" data-year="1800">1800</div>
-  <div class="year" data-year="1801">1801</div>
-  <div class="year" data-year="1802">1802</div>
-  <div class="year" data-year="1803">1803</div>
-  <div class="year active" data-year="1814">1814</div> <!-- Active -->
-  <div class="year" data-year="1815">1815</div>
-  <div class="year" data-year="1816">1816</div>
-  <div class="year" data-year="1817">1817</div>
-  <div class="year" data-year="1818">1818</div>
-  <div class="year" data-year="1819">1819</div>
-  <div class="year" data-year="1820">1820</div>
-  <div class="year" data-year="1821">1821</div>
-  <div class="year" data-year="1822">1822</div>
-  <div class="year" data-year="1823">1823</div>
-  <div class="year" data-year="1824">1824</div>
-  <div class="year" data-year="1825">1825</div>
+<div class="container">
+  <div class="years-column" id="years">
+    <div class="year" data-year="1800">1800</div>
+    <div class="year" data-year="1801">1801</div>
+    <div class="year" data-year="1802">1802</div>
+    <div class="year" data-year="1803">1803</div>
+    <div class="year" data-year="1804">1804</div>
+    <div class="year active" data-year="1805">1805</div>
+    <div class="year" data-year="1806">1806</div>
+    <div class="year" data-year="1807">1807</div>
+    <div class="year" data-year="1808">1808</div>
+    <div class="year" data-year="1809">1809</div>
+    <div class="year" data-year="1810">1810</div>
+    <div class="year" data-year="1811">1811</div>
+    <div class="year" data-year="1812">1812</div>
+    <div class="year" data-year="1813">1813</div>
+    <div class="year" data-year="1814">1814</div>
+    <div class="year" data-year="1815">1815</div>
+  </div>
+
+  <div class="placeholder">
+    <h2>Zone centrale</h2>
+    <p>Ici s’afficheront les événements de l’année sélectionnée.</p>
+  </div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const yearItems = document.querySelectorAll(".year");
-  let selectedYear = document.querySelector(".year.active");
+  document.addEventListener("DOMContentLoaded", function () {
+    const years = document.querySelectorAll(".year");
+    let selectedYear = document.querySelector(".year.active");
 
-  yearItems.forEach(item => {
-    item.addEventListener("click", () => {
-      if (selectedYear) {
-        selectedYear.classList.remove("active");
-      }
-      item.classList.add("active");
-      selectedYear = item;
+    years.forEach(year => {
+      year.addEventListener("click", () => {
+        if (selectedYear) {
+          selectedYear.classList.remove("active");
+        }
+        year.classList.add("active");
+        selectedYear = year;
+
+        // Logique future : filtrer événements, charger fiche, etc.
+        console.log("Année sélectionnée :", year.dataset.year);
+      });
     });
   });
-});
 </script>
 
 </body>
 </html>
+
